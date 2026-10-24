@@ -6,8 +6,9 @@ using UnityEngine;
 
 namespace MareDeFerro {
 [Serializable] public class Catch { public string name; public int value; public bool unusual; public Catch(string n,int v,bool u=false){name=n;value=v;unusual=u;} }
-[Serializable] public class HarborSave { public int coins=40, totalCatches, sold; public List<Catch> hold=new List<Catch>(); }
-public class HarborGame:MonoBehaviour {
+[Serializable] public class HarborSave { public int version=2, coins=40, totalCatches, sold; public List<Catch> hold=new List<Catch>(); public float[] potRemaining=new float[3]; }
+public partial class HarborGame:MonoBehaviour {
+    public const int HoldCapacity=8;
     public HarborSave save=new HarborSave();
     public bool aboard, fishing, started;
     public float tension=.4f,progress,speed;
@@ -16,7 +17,8 @@ public class HarborGame:MonoBehaviour {
     public Transform captain, vessel;
     public CharacterController walker;
     Vector3 lastSafe, cameraVelocity;
-    float verticalVelocity, toastUntil, fishClock, danger, cooldown, zoom=1, walkPhase;
+    float verticalVelocity, toastUntil, fishClock, danger, zoom=1, walkPhase;
+    Vector2 inventoryScroll;
     readonly float[] readyAt=new float[3];
     bool paused, inventory, overview;
     string dialog="", dialogName="";
@@ -24,6 +26,7 @@ public class HarborGame:MonoBehaviour {
     GUIStyle title, label, small, heading, body, button, tiny;
     Texture2D panel, accent, white;
     bool initialized, stylesReady;
+    bool testing => Array.IndexOf(Environment.GetCommandLineArgs(),"--smoke-test")>=0;
     public string SavePath => Path.Combine(Application.persistentDataPath,Array.IndexOf(Environment.GetCommandLineArgs(),"--smoke-test")>=0?"porto-test-save.json":"porto-save-v1.json");
     void Awake(){Initialize();}
     public void Initialize() {
@@ -34,17 +37,18 @@ public class HarborGame:MonoBehaviour {
         lastSafe=HarborWorld.DockSpawn;
         gameObject.AddComponent<HarborAmbience>();
         Load();
-        if(Array.IndexOf(Environment.GetCommandLineArgs(),"--smoke-test")>=0)StartCoroutine(SmokeTest());
+        if(testing)StartCoroutine(RunValidation());
     }
     void Update() {
         if(!Application.isPlaying)return;
+        if(testing)return;
         if(Input.GetKeyDown(KeyCode.F8)) Capture();
-        if(Input.GetKeyDown(KeyCode.Escape)) {if(dialog!="")dialog="";else if(inventory)inventory=false;else if(started)paused=!paused;}
+        if(Input.GetKeyDown(KeyCode.Escape)) {if(dialog!="")CloseDialog();else if(inventory)SetInventory(false);else if(started)SetPaused(!paused);}
         if(!started||paused)return;
-        if(Input.GetKeyDown(KeyCode.Tab))inventory=!inventory;
+        if(Input.GetKeyDown(KeyCode.Tab)&&dialog=="")SetInventory(!inventory);
         if(Input.GetKeyDown(KeyCode.C))overview=!overview;
         zoom=Mathf.Clamp(zoom-Input.mouseScrollDelta.y*.07f,.65f,1.45f);
-        if(dialog!="") {if(Input.GetKeyDown(KeyCode.E)||Input.GetKeyDown(KeyCode.Return))dialog="";return;}
+        if(dialog!="") {if(Input.GetKeyDown(KeyCode.E)||Input.GetKeyDown(KeyCode.Return))CloseDialog();return;}
         if(inventory)return;
         if(fishing){TickFishing(Time.deltaTime,Input.GetKey(KeyCode.Space));if(Input.GetKeyDown(KeyCode.Q))CancelFishing();return;}
         if(aboard)Sail();else Walk();
@@ -53,10 +57,11 @@ public class HarborGame:MonoBehaviour {
     void LateUpdate() {
         if(!view||!started)return;
         Vector3 focus=aboard?vessel.position:captain.position;
-        Vector3 offset=overview?new Vector3(29,27,-36):new Vector3(10,12.5f,-14)*zoom;
-        Vector3 target=overview?new Vector3(-1,2.5f,7):focus+Vector3.up*.7f;
-        view.transform.position=Vector3.SmoothDamp(view.transform.position,target+offset,ref cameraVelocity,.55f);
-        view.transform.rotation=Quaternion.Slerp(view.transform.rotation,Quaternion.LookRotation(target-view.transform.position),Time.deltaTime*5);
+        Vector3 offset=overview?(aboard?new Vector3(15,22,-24)*zoom:new Vector3(29,27,-36)):new Vector3(10,12.5f,-14)*zoom;
+        Vector3 target=overview&&!aboard?new Vector3(-1,2.5f,7):focus+Vector3.up*.7f;
+        if(aboard)target+=Vector3.ProjectOnPlane(vessel.forward,Vector3.up)*speed*.55f;
+        view.transform.position=Vector3.SmoothDamp(view.transform.position,target+offset,ref cameraVelocity,.55f,Mathf.Infinity,Time.unscaledDeltaTime);
+        view.transform.rotation=Quaternion.Slerp(view.transform.rotation,Quaternion.LookRotation(target-view.transform.position),Time.unscaledDeltaTime*5);
     }
     public void StartJourney() {
         started=true;overview=false;
@@ -66,34 +71,45 @@ public class HarborGame:MonoBehaviour {
         float h=(Input.GetKey(KeyCode.D)||Input.GetKey(KeyCode.RightArrow)?1:0)-(Input.GetKey(KeyCode.A)||Input.GetKey(KeyCode.LeftArrow)?1:0);
         float v=(Input.GetKey(KeyCode.W)||Input.GetKey(KeyCode.UpArrow)?1:0)-(Input.GetKey(KeyCode.S)||Input.GetKey(KeyCode.DownArrow)?1:0);
         Vector3 forward=Vector3.ProjectOnPlane(view.transform.forward,Vector3.up).normalized,right=Vector3.ProjectOnPlane(view.transform.right,Vector3.up).normalized;
-        Vector3 move=Vector3.ClampMagnitude(forward*v+right*h,1);float pace=Input.GetKey(KeyCode.LeftShift)?4.2f:2.7f;
-        if(walker.isGrounded){verticalVelocity=-2;lastSafe=captain.position;}else verticalVelocity-=16*Time.deltaTime;
-        walker.Move((move*pace+Vector3.up*verticalVelocity)*Time.deltaTime);
-        if(move.sqrMagnitude>.01f)captain.rotation=Quaternion.Slerp(captain.rotation,Quaternion.LookRotation(move),Time.deltaTime*12);
-        walkPhase+=Time.deltaTime*pace*4*move.magnitude;
+        WalkStep(forward*v+right*h,Input.GetKey(KeyCode.LeftShift),Time.deltaTime);
+    }
+    public void WalkStep(Vector3 direction,bool run,float dt) {
+        if(aboard||paused||inventory||dialog!=""||dt<=0)return;
+        Vector3 move=Vector3.ClampMagnitude(Vector3.ProjectOnPlane(direction,Vector3.up),1);float pace=run?4.2f:2.7f;
+        if(walker.isGrounded){verticalVelocity=-2;lastSafe=captain.position;}else verticalVelocity-=16*dt;
+        walker.Move((move*pace+Vector3.up*verticalVelocity)*dt);
+        if(move.sqrMagnitude>.01f)captain.rotation=Quaternion.Slerp(captain.rotation,Quaternion.LookRotation(move),dt*12);
+        walkPhase+=dt*pace*4*move.magnitude;
         for(int i=0;i<captain.childCount;i++){var part=captain.GetChild(i);if(part.name.StartsWith("Braço"))part.localRotation=Quaternion.Euler(Mathf.Sin(walkPhase)*(part.name.EndsWith("esquerdo")?1:-1)*22*move.magnitude,0,part.localPosition.x<0?-8:8);}
         if(captain.position.y<.35f){walker.enabled=false;captain.position=lastSafe.y>1?lastSafe:HarborWorld.DockSpawn;walker.enabled=true;verticalVelocity=0;Notify("Cuidado com a borda do cais.");}
     }
     void Sail() {
         float throttle=(Input.GetKey(KeyCode.W)||Input.GetKey(KeyCode.UpArrow)?1:0)-(Input.GetKey(KeyCode.S)||Input.GetKey(KeyCode.DownArrow)?1:0);
         float rudder=(Input.GetKey(KeyCode.D)||Input.GetKey(KeyCode.RightArrow)?1:0)-(Input.GetKey(KeyCode.A)||Input.GetKey(KeyCode.LeftArrow)?1:0);
-        speed=Mathf.MoveTowards(speed,throttle*(throttle<0?2:6),Time.deltaTime*(throttle==0?2:1.6f));
-        vessel.Rotate(0,rudder*Time.deltaTime*40*Mathf.Clamp01(Mathf.Abs(speed)+.2f)*(speed<0?-1:1),0,Space.World);
-        Vector3 next=vessel.position+vessel.forward*speed*Time.deltaTime;
-        bool coast=next.z>2.2f||Vector2.Distance(new Vector2(next.x,next.z),new Vector2(37,24))<11;
-        bool pier=next.x>-7.4f&&next.x< -2.35f&&next.z>-19;
-        bool boats=Vector2.Distance(new Vector2(next.x,next.z),new Vector2(-14,-2))<4||Vector2.Distance(new Vector2(next.x,next.z),new Vector2(16,-5))<4;
-        if(coast||pier||boats){speed=-speed*.2f;Notify("Água rasa. Afaste o barco do cais.");return;}
-        if(next.x< -65||next.x>65||next.z< -75){speed=0;Notify("Mar aberto — disponível numa próxima etapa.");return;}
-        vessel.position=next;
+        SailStep(throttle,rudder,Input.GetKey(KeyCode.Space),Time.deltaTime);
+    }
+    public void SailStep(float throttle,float rudder,bool brake,float dt) {
+        if(!aboard||fishing||paused||inventory||dialog!=""||dt<=0)return;
+        throttle=Mathf.Clamp(throttle,-1,1);rudder=Mathf.Clamp(rudder,-1,1);
+        speed=Mathf.MoveTowards(speed,brake?0:throttle*(throttle<0?2:6),dt*(brake?5.5f:throttle==0?2:1.6f));
+        float yaw=vessel.eulerAngles.y+rudder*dt*40*Mathf.Clamp01(Mathf.Abs(speed)+.2f)*(speed<0?-1:1);
+        Vector3 forward=Quaternion.Euler(0,yaw,0)*Vector3.forward;
+        Vector3 next=vessel.position+forward*speed*dt;
+        if(!HarborNavigation.CanOccupy(next,yaw)) {
+            // Still allow a straight retreat if the attempted turn would put the bow into the pier.
+            next=vessel.position+Vector3.ProjectOnPlane(vessel.forward,Vector3.up).normalized*speed*dt;yaw=vessel.eulerAngles.y;
+            if(!HarborNavigation.CanOccupy(next,yaw)){speed=0;Notify("Passagem bloqueada. Use ré e o leme para se afastar.");return;}
+        }
+        vessel.position=next;vessel.rotation=Quaternion.Euler(0,yaw,0);
     }
     public bool TryBoard() {
-        if(aboard||Vector3.Distance(captain.position,vessel.position)>6.5f)return false;
+        if(aboard||paused||inventory||dialog!=""||HarborNavigation.Distance(captain.position,HarborNavigation.Landing)>2.2f)return false;
         aboard=true;walker.enabled=false;captain.gameObject.SetActive(false);speed=0;Notify("Andorinha • W/S: motor · A/D: leme");return true;
     }
     public bool TryDock() {
-        if(!aboard||Vector2.Distance(new Vector2(vessel.position.x,vessel.position.z),new Vector2(.6f,-10))>6||Mathf.Abs(speed)>1.2f)return false;
-        aboard=false;speed=0;captain.position=new Vector3(-4.5f,1.6f,-8.8f);captain.gameObject.SetActive(true);walker.enabled=true;lastSafe=captain.position;Notify("De volta ao porto. Tomé compra a captura no mercado.");return true;
+        if(!aboard||fishing||paused||inventory||dialog!=""||HarborNavigation.Distance(vessel.position,HarborNavigation.Mooring)>5.5f||Mathf.Abs(speed)>1.2f)return false;
+        vessel.position=HarborNavigation.Mooring;vessel.rotation=Quaternion.Euler(0,180,0);
+        aboard=false;speed=0;verticalVelocity=0;captain.position=HarborNavigation.Landing;captain.gameObject.SetActive(true);walker.enabled=true;lastSafe=captain.position;Notify("Andorinha amarrada. Tomé compra a captura no mercado.");return true;
     }
     void Interact() {
         if(aboard) {
@@ -113,22 +129,24 @@ public class HarborGame:MonoBehaviour {
         return -1;
     }
     public bool BeginFishing(int index) {
-        if(!aboard||fishing||index<0||index>=3||Vector3.Distance(vessel.position,HarborWorld.FishingSpots[index])>=4.8f)return false;
+        if(!aboard||fishing||paused||inventory||dialog!=""||index<0||index>=3||Vector3.Distance(vessel.position,HarborWorld.FishingSpots[index])>=4.8f)return false;
+        if(save.hold.Count>=HoldCapacity){Notify("Porão cheio. Volte ao mercado para vender a captura.");return false;}
         if(Time.time<readyAt[index]){Notify("Esse covo está de molho. Volte em "+Mathf.CeilToInt(readyAt[index]-Time.time)+" s.");return false;}
         if(Mathf.Abs(speed)>1.2f){Notify("Reduza o motor antes de recolher o covo.");return false;}
         fishing=true;activeSpot=index;speed=0;tension=.43f;progress=0;danger=0;fishClock=0;return true;
     }
     public void TickFishing(float dt,bool pull) {
-        if(!fishing)return;fishClock+=dt;
+        if(!fishing||paused||inventory||dialog!=""||dt<=0)return;fishClock+=dt;
         tension=Mathf.Clamp01(tension+(pull?.32f:-.27f)*dt+Mathf.Sin(fishClock*2.8f+activeSpot)*dt*.10f);
         bool band=tension>=.28f&&tension<=.76f;
         if(band&&pull)progress+=dt*.14f;
         if(tension>.93f)danger+=dt;else danger=Mathf.Max(0,danger-dt*.7f);
-        if(danger>1.6f){fishing=false;readyAt[activeSpot]=Time.time+12;Notify("O cabo escapou. O covo ficou no fundo; tente novamente em instantes.");return;}
+        if(danger>1.6f){fishing=false;readyAt[activeSpot]=Time.time+12;Store();Notify("O cabo escapou. O covo ficou no fundo; tente novamente em instantes.");return;}
         if(progress>=1)FinishCatch();
     }
     public void CancelFishing(){fishing=false;Notify("Guincho parado. O covo continua na água.");}
     public void FinishCatch() {
+        if(!fishing||progress<1||save.hold.Count>=HoldCapacity)return;
         fishing=false;progress=1;readyAt[activeSpot]=Time.time+35;
         Catch c;
         int n=save.totalCatches%4;
@@ -139,20 +157,28 @@ public class HarborGame:MonoBehaviour {
         ShowDialog(c.unusual?"UMA SURPRESA NO COVO":"CAPTURA RECOLHIDA",c.name+"\n\n"+(c.unusual?(n==2?"Uma panela começa a andar pelo convés. Debaixo dela, duas pinças defendem uma casa que já teve dias melhores.":"Uma pequena pinça aparece pela alça de uma xícara azul. Alguém no porto talvez reconheça a louça."):"O primeiro peso do mar chegou ao convés. Tomé pode comprar sua captura no mercado.")+"\n\nValor no mercado: "+c.value+" moedas.");
     }
     public int Sell() {
+        if(aboard||paused||inventory||dialog!=""||HarborNavigation.Distance(captain.position,HarborNavigation.Market)>3.3f)return 0;
         int count=save.hold.Count;if(count==0){ShowDialog("TOMÉ","Traga o que a enseada der. Até peixe que o mercado rejeita tem uma boa receita esperando.\n\nAs boias amarelas marcam os covos da Mara.");return 0;}
         int sum=0;foreach(var c in save.hold)sum+=c.value;
         save.coins+=sum;save.sold+=count;save.hold.Clear();Store();
         ShowDialog("TOMÉ","Bom trabalho. "+count+" captura(s), "+sum+" moedas.\n\n"+(save.sold<=3?"Já dá para uma refeição quente. Mara vai fingir que não está orgulhosa.\n\nVocê completou sua primeira viagem. Pode continuar explorando a enseada e encontrando as criaturas dos covos.":"Pode deixar no balcão. Tem gente esperando o jantar, e você ainda tem mar pela frente."));return sum;
     }
-    void ShowDialog(string name,string text){dialogName=name;dialog=text;}
-    public void Notify(string s){if(toast==s&&Time.time<toastUntil)return;toast=s;toastUntil=Time.time+4;}
-    public void Store() {
-        try {Directory.CreateDirectory(Application.persistentDataPath);string tmp=SavePath+".tmp";File.WriteAllText(tmp,JsonUtility.ToJson(save,true));File.Copy(tmp,SavePath,true);File.Delete(tmp);}
-        catch(Exception e){Debug.LogWarning("Não foi possível salvar: "+e.Message);Notify("Não foi possível salvar o progresso neste computador.");}
+    void ShowDialog(string name,string text){dialogName=name;dialog=text;ApplyModalClock();}
+    public void CloseDialog(){dialog="";ApplyModalClock();}
+    public void SetPaused(bool value){paused=value;ApplyModalClock();}
+    void SetInventory(bool value){inventory=value;ApplyModalClock();}
+    void ApplyModalClock(){Time.timeScale=started&&(paused||inventory||dialog!="")?0:1;AudioListener.pause=paused;}
+    void OnApplicationFocus(bool focused){if(started&&!focused&&!testing)SetPaused(true);}
+    void OnApplicationQuit(){if(initialized&&started&&!testing)Store();}
+    void OnDestroy(){Time.timeScale=1;AudioListener.pause=false;}
+    public void Notify(string s){if(toast==s&&Time.unscaledTime<toastUntil)return;toast=s;toastUntil=Time.unscaledTime+4;}
+    public bool Store() {
+        try {for(int i=0;i<3;i++)save.potRemaining[i]=Mathf.Max(0,readyAt[i]-Time.time);HarborStorage.Save(SavePath,save);return true;}
+        catch(Exception e){Debug.LogWarning("Não foi possível salvar: "+e.Message);Notify("Não foi possível salvar o progresso neste computador.");return false;}
     }
     void Load() {
         if(Array.IndexOf(Environment.GetCommandLineArgs(),"--smoke-test")>=0)return;
-        try{if(File.Exists(SavePath)){var loaded=JsonUtility.FromJson<HarborSave>(File.ReadAllText(SavePath));if(loaded!=null){save=loaded;if(save.hold==null)save.hold=new List<Catch>();}}}catch(Exception e){Debug.LogWarning("Save indisponível: "+e.Message);}
+        try{save=HarborStorage.Load(SavePath,out bool recovered);for(int i=0;i<3;i++)readyAt[i]=Time.time+save.potRemaining[i];if(recovered)Notify("Progresso recuperado da cópia de segurança.");}catch(Exception e){Debug.LogWarning("Save indisponível: "+e.Message);Notify("Não foi possível ler o progresso salvo.");}
     }
     void Capture() {
         string folder=Path.Combine(Application.persistentDataPath,"Fotos");Directory.CreateDirectory(folder);string file=Path.Combine(folder,"porto-"+DateTime.Now.ToString("yyyyMMdd-HHmmss")+".png");
@@ -185,36 +211,36 @@ public class HarborGame:MonoBehaviour {
             GUI.Label(new Rect(81,h*.22f+70,410,180),"MARÉ\nDE FERRO",title);
             GUI.Label(new Rect(85,h*.22f+258,365,60),"Você chegou com a maré.\nAgora encontre seu lugar no cais.",body);
             if(GUI.Button(new Rect(85,h*.22f+350,300,49),"INICIAR VIAGEM  →",button))StartJourney();
-            GUI.Label(new Rect(85,h*.22f+417,365,22),"PORTO DAS VELAS  /  PROTÓTIPO 0.1",tiny);
+            GUI.Label(new Rect(85,h*.22f+417,365,22),"PORTO DAS VELAS  /  PROTÓTIPO 0.2",tiny);
             GUI.Label(new Rect(w-370,h-43,335,26),"Arte e exploração • uma primeira enseada",small);return;
         }
         Panel(new Rect(28,25,340,96));GUI.Label(new Rect(48,39,300,30),"PORTO DAS VELAS",heading);
         GUI.Label(new Rect(48,79,300,25),aboard?"ENSEADA  /  ANDORINHA":"FIM DE TARDE  /  NO CAIS",small);
-        Panel(new Rect(w-255,25,226,96));GUI.Label(new Rect(w-233,39,200,28),save.coins+"  moedas",heading);GUI.Label(new Rect(w-233,79,200,25),save.hold.Count+" captura(s) no porão",small);
-        GUI.Label(new Rect(30,h-36,w-60,25),aboard?"W/S  motor    A/D  leme    E  interagir    C  vista do porto    TAB  porão    ESC  pausa":"WASD / setas  caminhar    SHIFT  correr    E  interagir    C  vista do porto    RODA  zoom    ESC  pausa",small);
+        Panel(new Rect(w-255,25,226,96));GUI.Label(new Rect(w-233,39,200,28),save.coins+"  moedas",heading);GUI.Label(new Rect(w-233,79,200,25),save.hold.Count+" / "+HoldCapacity+" espaços no porão",small);
+        GUI.Label(new Rect(30,h-36,w-60,25),fishing?"ESPAÇO  puxar / soltar para aliviar    Q  cancelar recolhimento    ESC  pausa":aboard?"W/S  motor    A/D  leme    ESPAÇO  frear    E  interagir    C  câmera    TAB  porão    ESC  pausa":"WASD / setas  caminhar    SHIFT  correr    E  interagir    C  vista do porto    RODA  zoom    ESC  pausa",small);
         if(!fishing&&dialog==""&&!paused&&!inventory) {
             string prompt=Prompt();if(prompt!=""){Panel(new Rect(w/2-230,h-111,460,53));GUI.Label(new Rect(w/2-208,h-96,425,29),prompt,label);}
             if(aboard){GUI.Label(new Rect(w-230,140,210,27),Mathf.Abs(speed).ToString("0.0")+" • motor",label);DrawCompass(w,h);DrawChart(w);}
-            if(save.sold==0){Panel(new Rect(28,140,310,92));GUI.Label(new Rect(48,152,275,22),"A PRIMEIRA VIAGEM",small);GUI.Label(new Rect(48,183,270,44),save.hold.Count>0?"Volte e venda a captura ao Tomé.":"Embarque e recolha um covo\nnas boias amarelas.",small);}
+            if(save.sold==0||save.hold.Count>0){Panel(new Rect(28,140,310,92));GUI.Label(new Rect(48,152,275,22),"A PRIMEIRA VIAGEM",small);GUI.Label(new Rect(48,183,270,44),save.hold.Count>0?(aboard?"Volte ao embarque marcado\nna carta e venda ao Tomé.":"Leve a captura ao balcão\nde peixe do Tomé."):(aboard?"Siga até uma boia amarela.\nFreie com ESPAÇO e use E.":"Siga pelo píer até o embarque.\nUse E ao lado da Andorinha."),small);}
         }
-        if(Time.time<toastUntil&&dialog==""){Panel(new Rect(w/2-355,140,710,56));GUI.Label(new Rect(w/2-335,156,670,35),toast,small);}
+        if(Time.unscaledTime<toastUntil&&dialog==""){Panel(new Rect(w/2-355,245,710,56));GUI.Label(new Rect(w/2-335,261,670,35),toast,small);}
         if(fishing)FishingUI(w,h);
-        if(dialog!="") {
+        if(dialog!=""&&!paused) {
             float bh=286;Panel(new Rect(w/2-410,h-bh-65,820,bh));
             GUI.Label(new Rect(w/2-380,h-bh-43,740,32),dialogName,heading);
             GUI.Label(new Rect(w/2-380,h-bh+5,740,174),dialog,body);
-            if(GUI.Button(new Rect(w/2+202,h-126,175,43),"CONTINUAR  [E]",button))dialog="";
+            if(GUI.Button(new Rect(w/2+202,h-126,175,43),"CONTINUAR  [E]",button))CloseDialog();
         }
-        if(inventory){Panel(new Rect(w/2-290,180,580,460));GUI.Label(new Rect(w/2-260,205,520,40),"DIÁRIO DE BORDO",heading);GUI.Label(new Rect(w/2-260,255,520,30),"Capturas: "+save.totalCatches+"  •  Vendidas: "+save.sold,small);if(save.hold.Count==0)GUI.Label(new Rect(w/2-260,310,520,45),"Porão vazio. Há três boias na enseada.",body);for(int i=0;i<save.hold.Count&&i<8;i++)GUI.Label(new Rect(w/2-260,307+i*31,520,30),save.hold[i].name+"  ·  "+save.hold[i].value+" moedas",small);GUI.Label(new Rect(w/2-260,593,520,30),"TAB para fechar  •  F8 para fotografar",small);}
-        if(paused){Panel(new Rect(w/2-230,h/2-160,460,320));GUI.Label(new Rect(w/2-200,h/2-125,400,40),"UM RESPIRO NO CAIS",heading);if(GUI.Button(new Rect(w/2-200,h/2-55,400,48),"VOLTAR AO MAR",button))paused=false;if(GUI.Button(new Rect(w/2-200,h/2+8,400,48),"SALVAR PROGRESSO",button)){Store();Notify("Progresso salvo.");}if(GUI.Button(new Rect(w/2-200,h/2+71,400,48),"SAIR",button)){Store();Application.Quit();}}
+        if(inventory){Panel(new Rect(w/2-290,180,580,460));GUI.Label(new Rect(w/2-260,205,520,40),"DIÁRIO DE BORDO",heading);GUI.Label(new Rect(w/2-260,255,520,30),"Capturas: "+save.totalCatches+"  •  Vendidas: "+save.sold,small);if(save.hold.Count==0)GUI.Label(new Rect(w/2-260,310,520,45),"Porão vazio. Há três boias na enseada.",body);inventoryScroll=GUI.BeginScrollView(new Rect(w/2-260,305,520,265),inventoryScroll,new Rect(0,0,490,Mathf.Max(265,save.hold.Count*31)));for(int i=0;i<save.hold.Count;i++)GUI.Label(new Rect(0,i*31,490,30),save.hold[i].name+"  ·  "+save.hold[i].value+" moedas",small);GUI.EndScrollView();GUI.Label(new Rect(w/2-260,593,520,30),"TAB para fechar  •  F8 para fotografar",small);}
+        if(paused){Panel(new Rect(w/2-230,h/2-160,460,320));GUI.Label(new Rect(w/2-200,h/2-125,400,40),"UM RESPIRO NO CAIS",heading);if(GUI.Button(new Rect(w/2-200,h/2-55,400,48),"VOLTAR AO MAR",button))SetPaused(false);if(GUI.Button(new Rect(w/2-200,h/2+8,400,48),"SALVAR PROGRESSO",button)&&Store())Notify("Progresso salvo.");if(GUI.Button(new Rect(w/2-200,h/2+71,400,48),"SAIR",button)&&Store())Application.Quit();}
     }
     string Prompt() {
-        if(aboard){int i=NearestSpot();if(i>=0)return Time.time<readyAt[i]?"Covo de molho • "+Mathf.CeilToInt(readyAt[i]-Time.time)+" s":"[E]  Recolher covo • reduza o motor";if(Vector2.Distance(new Vector2(vessel.position.x,vessel.position.z),new Vector2(.6f,-10))<6)return "[E]  Desembarcar • motor devagar";return "Procure as bandeirolas amarelas da enseada";}
+        if(aboard){int i=NearestSpot();if(i>=0)return save.hold.Count>=HoldCapacity?"Porão cheio • volte ao mercado":Time.time<readyAt[i]?"Covo de molho • "+Mathf.CeilToInt(readyAt[i]-Time.time)+" s":Mathf.Abs(speed)>1.2f?"[ESPAÇO] Frear para recolher":"[E] Recolher covo";if(HarborNavigation.Distance(vessel.position,HarborNavigation.Mooring)<=5.5f)return Mathf.Abs(speed)>1.2f?"[ESPAÇO] Frear para atracar":"[E] Atracar e desembarcar";return save.hold.Count>0?"Porto • "+Mathf.RoundToInt(HarborNavigation.Distance(vessel.position,HarborNavigation.Mooring))+" m • siga a carta":"Procure as bandeirolas amarelas da enseada";}
         Vector3 p=captain.position;if(Vector3.Distance(p,HarborWorld.mara.position)<2.8f)return "[E]  Conversar com Mara";
         if(Vector3.Distance(p,new Vector3(1,1.55f,6.8f))<3.3f)return "[E]  Mercado • vender captura";
         if(Vector3.Distance(p,new Vector3(-15,1.55f,9.1f))<2.6f)return "[E]  Conversar com Nina";
         if(Vector3.Distance(p,new Vector3(8,1.55f,7))<2.6f)return "[E]  Conversar com Ivo";
-        if(Vector3.Distance(p,vessel.position)<6.5f)return "[E]  Embarcar na Andorinha";return "";
+        if(HarborNavigation.Distance(p,HarborNavigation.Landing)<=2.2f)return "[E]  Embarcar na Andorinha";return "";
     }
     void FishingUI(float w,float h) {
         Panel(new Rect(w/2-320,h-260,640,195));GUI.Label(new Rect(w/2-290,h-239,580,35),"O PESO DO FUNDO",heading);
@@ -229,51 +255,25 @@ public class HarborGame:MonoBehaviour {
             Vector3 pos=view.WorldToScreenPoint(HarborWorld.FishingSpots[i]+Vector3.up*2);
             if(pos.z<=0)continue;float scale=Mathf.Min(Screen.width/1440f,Screen.height/900f);float x=pos.x/scale,y=(Screen.height-pos.y)/scale;
             if(x<20||x>w-140||y<130||y>h-160)continue;
-            GUI.Label(new Rect(x-37,y,160,23),"COVO "+(i+1),small);
+            GUI.Label(new Rect(x-37,y,190,23),"COVO "+(i+1)+" · "+Mathf.RoundToInt(HarborNavigation.Distance(vessel.position,HarborWorld.FishingSpots[i]))+" m",small);
         }
     }
     void DrawChart(float w) {
         Rect map=new Rect(w-228,185,198,188);Panel(map);
         GUI.Label(new Rect(map.x+15,map.y+10,175,25),"CARTA DA ENSEADA",tiny);
-        Vector2 origin=new Vector2(map.x+99,map.y+49);float s=2.1f;
+        Vector2 origin=new Vector2(map.x+99,map.y+49);float sx=1.2f,sz=1.4f;
         GUI.color=new Color(.56f,.67f,.55f);GUI.DrawTexture(new Rect(map.x+16,map.y+36,166,8),white);GUI.color=Color.white;
         for(int i=0;i<3;i++) {
-            Vector3 p=HarborWorld.FishingSpots[i];float x=origin.x+p.x*s,y=origin.y-p.z*s;
+            Vector3 p=HarborWorld.FishingSpots[i];float x=origin.x+p.x*sx,y=origin.y-p.z*sz;
             GUI.color=Time.time<readyAt[i]?new Color(.45f,.52f,.48f):new Color(.97f,.71f,.30f);GUI.DrawTexture(new Rect(x-3,y-3,6,6),white);GUI.color=Color.white;
             GUI.Label(new Rect(x+6,y-8,30,20),(i+1).ToString(),tiny);
         }
-        Vector3 b=vessel.position;float bx=origin.x+b.x*s,by=origin.y-b.z*s;
+        Vector3 b=vessel.position;float bx=origin.x+b.x*sx,by=origin.y-b.z*sz;
         bx=Mathf.Clamp(bx,map.x+10,map.xMax-13);by=Mathf.Clamp(by,map.y+40,map.yMax-20);
         GUI.color=new Color(.65f,.88f,.85f);GUI.DrawTexture(new Rect(bx-4,by-4,8,8),white);GUI.color=Color.white;
+        Matrix4x4 oldMatrix=GUI.matrix;GUIUtility.RotateAroundPivot(vessel.eulerAngles.y,new Vector2(bx,by));GUI.color=new Color(.65f,.88f,.85f);GUI.DrawTexture(new Rect(bx-1,by-12,2,9),white);GUI.color=Color.white;GUI.matrix=oldMatrix;
+        GUI.Label(new Rect(origin.x+5,origin.y+4,70,20),"PORTO",tiny);
         GUI.Label(new Rect(map.x+14,map.yMax-23,170,20),"N ↑   •   amarelo = covo",tiny);
-    }
-    IEnumerator SmokeTest() {
-        yield return null;started=true;dialog="";
-        walker.enabled=false;captain.position=new Vector3(-4.5f,1.6f,-9);walker.enabled=true;
-        if(!TryBoard())throw new Exception("QA: embarque falhou");
-        if(BeginFishing(0))throw new Exception("QA: covo acessível à distância");
-        vessel.position=HarborWorld.FishingSpots[0];speed=0;
-        speed=3;if(BeginFishing(0))throw new Exception("QA: guincho permitido com barco rápido");speed=0;
-        if(!BeginFishing(0))throw new Exception("QA: início do guincho falhou");
-        for(int i=0;i<1600&&fishing;i++)TickFishing(.02f,tension<.64f);
-        if(save.hold.Count!=1||fishing)throw new Exception("QA: captura falhou");
-        if(BeginFishing(0))throw new Exception("QA: espera do covo ignorada");
-        dialog="";vessel.position=new Vector3(.6f,.1f,-10);speed=0;
-        if(!TryDock())throw new Exception("QA: desembarque falhou");
-        if(Sell()!=24||save.coins!=64||save.hold.Count!=0)throw new Exception("QA: venda falhou");
-        string roundtrip=JsonUtility.ToJson(save);var restored=JsonUtility.FromJson<HarborSave>(roundtrip);
-        if(restored.coins!=64||restored.sold!=1)throw new Exception("QA: persistência falhou");
-        Physics.SyncTransforms();
-        if(!Physics.Raycast(new Vector3(-4.5f,4,-5),Vector3.down,4))throw new Exception("QA: píer sem piso");
-        if(!Physics.Raycast(new Vector3(1,4,6),Vector3.down,4))throw new Exception("QA: mercado sem piso");
-        dialog="";overview=true;
-        yield return new WaitForSeconds(2);
-        string dir=Path.GetFullPath(Path.Combine(Application.dataPath,"..","..","..","verificacao"));Directory.CreateDirectory(dir);
-        RenderPhoto(view,Path.Combine(dir,"porto-runtime.png"),1600,1000);
-        ScreenCapture.CaptureScreenshot(Path.Combine(dir,"porto-interface.png"));
-        yield return new WaitForSeconds(.7f);
-        File.WriteAllText(Path.Combine(dir,"runtime-test.txt"),"PASS: world initialized; boarding; fishing distance and speed restrictions; fishing minigame; catch; pot cooldown; docking; sale; save roundtrip; pier and market floor colliders; runtime and HUD screenshots.\n"+DateTime.UtcNow.ToString("O"));
-        Debug.Log("MARE_QA_PASS");Application.Quit(0);
     }
 }
 }

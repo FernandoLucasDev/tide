@@ -119,7 +119,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &402108739
+--- !u!1 &35392870
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -127,8 +127,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 402108741}
-  - component: {fileID: 402108740}
+  - component: {fileID: 35392872}
+  - component: {fileID: 35392871}
   m_Layer: 0
   m_Name: "Mar\xE9 de Ferro \u2014 iniciar"
   m_TagString: Untagged
@@ -136,23 +136,28 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &402108740
+--- !u!114 &35392871
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 402108739}
+  m_GameObject: {fileID: 35392870}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 22096221179404d4aa559d75e2079951, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   save:
+    version: 2
     coins: 40
     totalCatches: 0
     sold: 0
     hold: []
+    potRemaining:
+    - 0
+    - 0
+    - 0
   aboard: 0
   fishing: 0
   started: 0
@@ -164,13 +169,13 @@ MonoBehaviour:
   captain: {fileID: 0}
   vessel: {fileID: 0}
   walker: {fileID: 0}
---- !u!4 &402108741
+--- !u!4 &35392872
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 402108739}
+  m_GameObject: {fileID: 35392870}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -183,4 +188,4 @@ Transform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 402108741}
+  - {fileID: 35392872}

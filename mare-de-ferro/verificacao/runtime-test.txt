@@ -1,2 +1,43 @@
-PASS: world initialized; boarding; fishing distance and speed restrictions; fishing minigame; catch; pot cooldown; docking; sale; save roundtrip; pier and market floor colliders; runtime and HUD screenshots.
-2026-10-24T17:13:12.8143166Z
+PASS: Cannot board from the starting position
+PASS: Walk from spawn to gangway with CharacterController, then board
+PASS: Cannot collect a distant pot
+PASS: Sail to first buoy using acceleration, rudder and hull collision checks
+PASS: Cannot use winch while moving fast
+PASS: Space brake stops boat from 3 m/s within one second
+PASS: Begin fishing after braking
+PASS: Pause freezes simulation clock and winch
+PASS: Inventory suspends fishing
+PASS: Winch yields exactly one catch
+PASS: Repeated completion cannot duplicate catch
+PASS: Pot cooldown blocks immediate recollection
+PASS: Cannot sell at sea
+PASS: Return to port under rudder control and dock
+PASS: Docking snaps boat to reachable mooring
+PASS: Can reboard immediately after docking
+PASS: Cannot sell from gangway
+PASS: Walk along pier to market and sell for correct amount
+PASS: Empty sale cannot duplicate currency
+PASS: Progress survives actual disk save and reload
+PASS: Corrupted primary save recovers last valid backup
+PASS: Recovered save can be saved again
+PASS: Original v1 save remains compatible
+PASS: Docking edge remains reboardable: (5.90, 0.10, -10.00)
+PASS: Docking edge remains reboardable: (0.60, 0.10, -15.20)
+PASS: Hull cannot pass through waterfront
+PASS: Reverse escapes collision without getting stuck
+PASS: Hull width rejects pier intersection
+PASS: Start controlled winch at 30 Hz
+PASS: Winch succeeds at 30 Hz
+PASS: Start controlled winch at 60 Hz
+PASS: Winch succeeds at 60 Hz
+PASS: Start controlled winch at 120 Hz
+PASS: Winch succeeds at 120 Hz
+PASS: Start overload scenario
+PASS: Overload fails safely, grants no catch and sets retry delay
+PASS: Retry delay is persisted
+PASS: Start cancellation scenario
+PASS: Cancellation grants no catch
+PASS: Full hold blocks ninth catch without discarding inventory
+PASS: Restore final playable port state
+PASS: Runtime screenshots captured for catch, market and harbor
+2026-10-24T17:26:43.9746834Z

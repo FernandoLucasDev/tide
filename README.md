@@ -22,6 +22,8 @@ No editor, use **Maré de Ferro → Criar cena e gerar Windows**. O executável 
 - Embarque, navegação na enseada e desembarque.
 - Três covos, minigame de tensão e quatro tipos de captura no inventário.
 - Venda no mercado e salvamento de moedas e inventário.
+- Freio, colisões do casco, atracação segura, porão de oito capturas e pausa da simulação.
+- Salvamento com cópia de segurança e persistência da espera dos covos.
 - Água animada, iluminação de fim de tarde, barcos flutuantes e som ambiente.
 
 O visual é uma primeira construção procedural, ainda distante do nível de detalhe das artes conceituais. As criaturas ainda não têm modelos próprios no convés. Temporadas, frotas competitivas, demais mares e campanha completa estão planejados no brief.
@@ -30,6 +32,7 @@ O visual é uma primeira construção procedural, ainda distante do nível de de
 
 - [Brief criativo e direção de arte](mare-de-ferro/BRIEF-CRIATIVO.md)
 - [Controles e primeira viagem](mare-de-ferro/COMO-JOGAR.md)
+- [Validação da base e ajustes da versão 0.2](mare-de-ferro/BASE-JOGAVEL.md)
 - [Artes conceituais](mare-de-ferro/LEIA-ME.md)
 - [Prompts das imagens geradas por IA](mare-de-ferro/PROMPTS-ARTE.md)
 - [Verificação do executável](mare-de-ferro/verificacao/LEIA-ME.md)
