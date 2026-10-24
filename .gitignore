@@ -1,0 +1,15 @@
+# Unity caches and generated builds
+**/[Ll]ibrary/
+**/[Tt]emp/
+**/[Oo]bj/
+**/[Ll]ogs/
+**/[Uu]ser[Ss]ettings/
+**/[Bb]uilds/
+*.csproj
+*.sln
+*.slnx
+.vs/
+*.log
+*.tmp
+.DS_Store
+Thumbs.db

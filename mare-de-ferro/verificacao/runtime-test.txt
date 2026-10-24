@@ -1,0 +1,2 @@
+PASS: world initialized; boarding; fishing distance and speed restrictions; fishing minigame; catch; pot cooldown; docking; sale; save roundtrip; pier and market floor colliders; runtime and HUD screenshots.
+2026-10-24T17:13:12.8143166Z
