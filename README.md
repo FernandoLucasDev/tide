@@ -30,6 +30,7 @@ O visual é uma primeira construção procedural, ainda distante do nível de de
 
 ## Documentação
 
+- [Bíblia narrativa: mistério, mares, hierarquia e personagens](mare-de-ferro/BIBLIA-NARRATIVA.md)
 - [Brief criativo e direção de arte](mare-de-ferro/BRIEF-CRIATIVO.md)
 - [Controles e primeira viagem](mare-de-ferro/COMO-JOGAR.md)
 - [Validação da base e ajustes da versão 0.2](mare-de-ferro/BASE-JOGAVEL.md)

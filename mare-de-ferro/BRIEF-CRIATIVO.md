@@ -1,6 +1,8 @@
 # MARÉ DE FERRO
 ## Brief criativo e direção de arte — versão 0.1
 
+**Atualização narrativa 0.3:** a [Bíblia narrativa](BIBLIA-NARRATIVA.md) consolida e substitui as propostas de história, capítulos, hierarquia e personagens abaixo. Inclui trabalho físico no convés e delegação progressiva. Este brief preserva a direção de arte e o registro inicial do conceito.
+
 **Estado:** proposta criativa para discussão. Nome, números e escolhas de produção ainda podem mudar. As imagens desta pasta são artes conceituais, não capturas de um jogo implementado.
 
 > Você chegou à praia sem um barco. Um dia, uma frota inteira vai esperar pela sua ordem.
