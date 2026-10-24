@@ -45,16 +45,23 @@ O Rei não é um juiz moral nem um animal inteiramente compreensível. Pode mata
 
 ## Hierarquia: aprender, assumir, delegar
 
-A carreira profissional começa no barco de Celina. Um pequeno bote permite exploração local desde cedo; comandar um pesqueiro em mar aberto exige outra preparação. As funções abaixo são uma adaptação para este universo ficcional.
+A carreira profissional começa no barco de Celina. Um pequeno bote permite exploração local desde cedo; comandar um pesqueiro em mar aberto exige outra preparação. A estrutura se inspira na pesca de caranguejo retratada em Pesca Mortal, com funções que podem se acumular conforme a embarcação. A sequência abaixo é a progressão da campanha, não uma escala universal de cargos reais.
+
+**Progressão do jogador:** novato → marinheiro de convés → chefe de convés → aprendizado no leme → capitão.
 
 | Etapa | O que o jogador faz | Prova de crescimento | O que passa a decidir |
 |---|---|---|---|
-| Ajudante de isca | Busca material, corta isca, abastece cada covo e limpa a bancada | Mantém o trabalho organizado numa saída curta | Preparação e pequenos gastos pessoais |
+| Novato — greenhorn | Aprende a preparar iscas, abastecer covos, limpar e auxiliar na separação das capturas | Mantém o trabalho organizado numa saída curta | Preparação e pequenos gastos pessoais |
 | Marinheiro de convés | Separa capturas, devolve animais, guarda carga, prende cabos e opera a âncora quando necessário | Resolve uma carga solta sem abandonar um colega | Ordem das próprias tarefas e distribuição da carga |
 | Chefe de convés | Coordena lançamento e recolhimento dos covos, opera guincho e distribui postos | Interrompe uma operação perigosa e conduz a equipe ao abrigo | Ritmo de trabalho, pausas e segurança do convés |
-| Imediato / timoneiro em formação | Faz vigia, interpreta cartas, conduz trechos supervisionados e organiza turnos | Planeja e executa uma travessia com combustível, maré e descanso suficientes | Rotas supervisionadas e resposta inicial a emergências |
+| Aprendizado no leme — fase de formação | Faz vigia, interpreta cartas, conduz trechos supervisionados e aprende a organizar turnos | Planeja e executa uma travessia com combustível, maré e descanso suficientes | Rotas supervisionadas e resposta inicial a emergências |
 | Capitão | Navega o próprio pesqueiro, contrata equipe e assume contratos | Compra ou recupera um casco e conclui uma viagem de habilitação | Destino, retorno, finanças, contratos e prioridades de resgate |
-| Comandante de expedição | Reúne capitães independentes e atribui funções à frota | Conquista adesão por confiança e prepara a expedição final | Estratégia conjunta e critérios de retirada |
+
+Preparar iscas é uma tarefa inicial do novato, não um cargo separado. O aprendizado no leme é uma etapa de preparação para comandar; não exige criar um posto de imediato em todo barco. Embarcações que comportem essa função podem ter imediato ou capitão substituto, como a Boreal.
+
+**Máquinas — especialidade paralela:** o responsável pelos motores, sistemas hidráulicos e equipamentos pode também trabalhar no convés. Essa especialidade não é uma promoção obrigatória entre chefe de convés e capitão. Nina apoia a frota na oficina; as viagens precisam prever quem assume os cuidados das máquinas a bordo.
+
+**Comando da expedição — função narrativa final:** já como capitão, o jogador reúne outros capitães por reputação e acordos. Coordena funções, estratégia e critérios de retirada durante a missão contra o Rei. Não recebe uma patente permanente acima deles nem se torna dono de suas frotas.
 
 Promoções dependem de competência demonstrada e acontecimentos concretos, com possibilidade de repetir a formação após falhar. Dinheiro não compra confiança. A condição de capitão não exige obrigatoriamente possuir o barco; na campanha, recuperar um casco é o caminho para a independência.
 
@@ -74,7 +81,7 @@ O prólogo termina no jantar da tripulação. Do rádio desligado vem uma pancad
 
 ### I — Enseada das Velas: um lugar à mesa
 
-**Base:** Porto das Velas. **Carreira:** ajudante → marinheiro. **Temporada:** pesca costeira de águas amenas.
+**Base:** Porto das Velas. **Carreira:** novato → marinheiro de convés. **Temporada:** pesca costeira de águas amenas.
 
 O desafio é ganhar o primeiro pagamento e aprender a trabalhar com gente que já possui intimidade entre si. O mar traz vento, balanço e pequenos acidentes recuperáveis. No porto, há feira, oficina, pensão e visitas ao farol.
 
@@ -96,7 +103,7 @@ Um emissor antigo surge dentro de um covo. Seu ritmo coincide com as três panca
 
 ### III — Costa dos Naufrágios: quem ficou para trás
 
-**Base:** Ponta do Sino. **Carreira:** chefe de convés → imediato. **Temporada:** correntes fortes e pesca entre recifes.
+**Base:** Ponta do Sino. **Carreira:** chefe de convés, iniciando o aprendizado no leme. **Temporada:** correntes fortes e pesca entre recifes.
 
 O jogador começa a conduzir o barco sob supervisão. Ondas exigem ajustar rumo e velocidade, enquanto carga e cabos mal presos tornam a travessia mais difícil. A estação de resgate preserva cartas e registros de desaparecidos.
 
@@ -132,7 +139,7 @@ Ao fim, as frotas possuem razões diferentes para aceitar a missão: reparar uma
 
 ### VI — Fossa da Coroa: todos os barcos voltam?
 
-**Base:** expedição conjunta, com retorno aos portos disponível antes da partida final. **Carreira:** comandante de expedição.
+**Base:** expedição conjunta, com retorno aos portos disponível antes da partida final. **Carreira:** capitão. **Função na missão:** comandante da expedição, por acordo entre capitães independentes.
 
 O jogador escolhe funções: reconhecimento, isca, contenção, corte e resgate. Tripulações menos experientes podem participar em apoio, preservando caminhos para quem não conquistou todos os capitães. Preparação altera dificuldade e consequências; uma amizade perdida não torna a campanha impossível.
 
