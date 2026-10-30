@@ -1,25 +1,39 @@
+PASS: English default, crew atlas and approved harbor cover loaded
+PASS: Arrival is localized into English
+PASS: Portuguese preserves original story text
 PASS: Fresh journey opens arrival for a job aboard the missing Boa Esperanca
+PASS: English translation exists for story page: UMA VAGA NO CAIS
+PASS: English translation exists for story page: PORTO DAS VELAS
 PASS: Conversation completes without trapping input
 PASS: Novice checks departures and cannot bypass training by boarding Andorinha
 PASS: Falling off pier recovers at safe harbor spawn
 PASS: New arrival has spent their savings on the ferry passage
 PASS: Walk to reachable task: Notice / pot 0
+PASS: English translation exists for story page: QUADRO DE EMBARQUES
+PASS: English translation exists for story page: UMA VOZ NO CAIS
 PASS: Conversation completes without trapping input
 PASS: Task advances exactly once: Notice
 PASS: Checkpoint roundtrip: Mara
 PASS: Walk to reachable task: Mara / pot 0
+PASS: English translation exists for story page: MARA
+PASS: English translation exists for story page: MARA
 PASS: Conversation completes without trapping input
 PASS: Task advances exactly once: Mara
 PASS: Checkpoint roundtrip: Dalia
 PASS: Walk to reachable task: Dalia / pot 0
+PASS: English translation exists for story page: DÁLIA
+PASS: English translation exists for story page: DÁLIA
 PASS: Conversation completes without trapping input
 PASS: Task advances exactly once: Dalia
 PASS: Checkpoint roundtrip: Celina
 PASS: Walk to reachable task: Celina / pot 0
+PASS: English translation exists for story page: CELINA
+PASS: English translation exists for story page: CELINA
 PASS: Conversation completes without trapping input
 PASS: Task advances exactly once: Celina
 PASS: Checkpoint roundtrip: Board
 PASS: Walk to reachable task: Board / pot 0
+PASS: English translation exists for story page: SÃO BENTO • PRIMEIRA SAÍDA
 PASS: Conversation completes without trapping input
 PASS: Task advances exactly once: Board
 PASS: Checkpoint roundtrip: Bait
@@ -45,6 +59,7 @@ PASS: Conversation completes without trapping input
 PASS: Task advances exactly once: Winch
 PASS: Checkpoint roundtrip: Sort
 PASS: Walk to reachable task: Sort / pot 0
+PASS: English translation exists for story page: TRIAGEM DO COVO
 PASS: Conversation completes without trapping input
 PASS: Task advances exactly once: Sort
 PASS: Checkpoint roundtrip: Stow
@@ -57,6 +72,7 @@ PASS: Checkpoint roundtrip: Secure
 PASS: Walk to reachable task: Secure / pot 1
 PASS: Pause freezes manual work: Secure
 PASS: Releasing E resets unfinished work: Secure
+PASS: English translation exists for story page: CELINA
 PASS: Conversation completes without trapping input
 PASS: Task advances exactly once: Secure
 PASS: Checkpoint roundtrip: Bait
@@ -83,6 +99,7 @@ PASS: Conversation completes without trapping input
 PASS: Task advances exactly once: Winch
 PASS: Checkpoint roundtrip: Sort
 PASS: Walk to reachable task: Sort / pot 1
+PASS: English translation exists for story page: TRIAGEM DO COVO
 PASS: Conversation completes without trapping input
 PASS: Task advances exactly once: Sort
 PASS: Checkpoint roundtrip: Stow
@@ -114,6 +131,8 @@ PASS: Conversation completes without trapping input
 PASS: Task advances exactly once: Winch
 PASS: Checkpoint roundtrip: Sort
 PASS: Walk to reachable task: Sort / pot 2
+PASS: English translation exists for story page: TRÊS ONDAS AZUIS
+PASS: English translation exists for story page: CELINA
 PASS: Conversation completes without trapping input
 PASS: Task advances exactly once: Sort
 PASS: Checkpoint roundtrip: Stow
@@ -124,14 +143,20 @@ PASS: Conversation completes without trapping input
 PASS: Task advances exactly once: Stow
 PASS: Checkpoint roundtrip: Return
 PASS: Walk to reachable task: Return / pot 3
+PASS: English translation exists for story page: CELINA
 PASS: Conversation completes without trapping input
 PASS: Task advances exactly once: Return
 PASS: Checkpoint roundtrip: Deliver
 PASS: Walk to reachable task: Deliver / pot 3
+PASS: English translation exists for story page: TOMÉ
 PASS: Conversation completes without trapping input
 PASS: Task advances exactly once: Deliver
 PASS: Checkpoint roundtrip: Dinner
 PASS: Walk to reachable task: Dinner / pot 3
+PASS: English translation exists for story page: UM LUGAR À MESA
+PASS: English translation exists for story page: IVO
+PASS: English translation exists for story page: MARA
+PASS: English translation exists for story page: CELINA
 PASS: Conversation completes without trapping input
 PASS: Task advances exactly once: Dinner
 PASS: Checkpoint roundtrip: Radio
@@ -141,6 +166,9 @@ PASS: Task advances exactly once: Radio
 PASS: Checkpoint roundtrip: Ending
 PASS: Pause cannot skip final sound sequence
 PASS: Exactly three audible knocks lead to the ending conversation
+PASS: English translation exists for story page: MARA
+PASS: English translation exists for story page: CELINA
+PASS: English translation exists for story page: UM LUGAR À MESA
 PASS: Conversation completes without trapping input
 PASS: Entire prologue reaches free exploration
 PASS: Three pots and 36-coin wage awarded exactly once
@@ -150,4 +178,4 @@ PASS: Finishing prologue unlocks existing free sailing
 PASS: Legacy economy preserved while new prologue becomes available
 PASS: Ending and keepsake survive disk reload
 PASS: Full prologue exercised using movement, interactions, dialog, audio timing and persistence
-2026-10-30T11:45:11.0523563Z
+2026-10-30T12:00:03.5904903Z

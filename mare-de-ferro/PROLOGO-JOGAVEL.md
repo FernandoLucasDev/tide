@@ -2,7 +2,7 @@
 
 Implementação na interface existente, com geometria procedural e os mesmos painéis, fontes e controles do protótipo. A bíblia narrativa continua definindo a campanha; esta entrega cobre seu prólogo.
 
-**Idioma de produção definido:** inglês será o idioma principal da interface e das falas. Esta entrega jogável ainda usa português; tradução, dublagem e versões em outros idiomas ficam para a próxima etapa, após a validação do prólogo pelo jogador.
+**Idioma:** inglês é o padrão do prólogo e da nova interface, com português disponível nos botões EN/PT do menu inicial e da pausa. As falas do prólogo estão traduzidas; não há dublagem. A exploração livre legada ainda contém textos em português. Veja `UI-DIRECAO.md` para o escopo visual e os assets.
 
 ## Percurso
 

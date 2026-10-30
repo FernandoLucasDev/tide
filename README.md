@@ -2,7 +2,7 @@
 
 Protótipo de uma aventura de pesca, vida em comunidade e comando de embarcações. Você chega a Porto das Velas por uma oferta de emprego, mas o barco que o contratou desapareceu. Um trabalho com Celina começa sua vida no mar e a investigação do Boa Esperança.
 
-![Protótipo real de Porto das Velas](mare-de-ferro/verificacao/porto-interface.png)
+![Interface do prólogo em execução](mare-de-ferro/verificacao/ui-mara.png)
 
 ## Abrir no Unity
 
@@ -21,6 +21,7 @@ No editor, use **Maré de Ferro → Criar cena e gerar Windows**. O executável 
 - Prólogo completo: chegada por um emprego no Boa Esperança desaparecido, acolhimento no porto, trabalho no São Bento, jantar e três pancadas no rádio.
 - Três ciclos de trabalho no convés com caminhada entre bancada, covo, guincho, triagem e porão; amarração de carga e ermitão protegido no viveiro.
 - Objetivos, diário, diálogos em sequência e salvamento por etapa; diária de 36 moedas e exploração livre liberada ao concluir.
+- Primeira aplicação da direção final à UI: menu ilustrado, seis retratos, painéis náuticos, diário com abas e prólogo em inglês/português.
 - Caminhada pelo cais, câmera e diálogos iniciais.
 - Embarque, navegação na enseada e desembarque.
 - Três covos, minigame de tensão e quatro tipos de captura no inventário.
@@ -37,6 +38,7 @@ O visual é uma primeira construção procedural, ainda distante do nível de de
 - [Brief criativo e direção de arte](mare-de-ferro/BRIEF-CRIATIVO.md)
 - [Controles e primeira viagem](mare-de-ferro/COMO-JOGAR.md)
 - [Prólogo implementado e critérios de validação](mare-de-ferro/PROLOGO-JOGAVEL.md)
+- [Interface, idiomas e origem dos retratos](mare-de-ferro/UI-DIRECAO.md)
 - [Validação da base e ajustes da versão 0.2](mare-de-ferro/BASE-JOGAVEL.md)
 - [Artes conceituais](mare-de-ferro/LEIA-ME.md)
 - [Prompts das imagens geradas por IA](mare-de-ferro/PROMPTS-ARTE.md)
@@ -46,8 +48,8 @@ O visual é uma primeira construção procedural, ainda distante do nível de de
 
 1. Jogar o prólogo e calibrar duração das tarefas, ritmo dos diálogos e orientação no convés.
 2. Produzir um pequeno trecho do cais com qualidade visual próxima da referência: modelos, materiais, água e iluminação.
-3. Criar a interface definitiva para esse mesmo trecho: diálogo, captura, mercado e diário.
+3. Refinar a nova interface após jogar e estender o mesmo tratamento à pesca livre e ao mercado.
 4. Completar uma temporada curta com progressão de barco e um capitão rival.
 5. Expandir o conteúdo usando os padrões visuais e mecânicos aprovados.
 
-A interface atual usa IMGUI para prototipagem. A apresentação final precisa manter as regras de jogo separadas dos painéis para permitir trocar a interface sem refazer pesca, inventário e economia.
+A interface usa IMGUI, com apresentação em `HarborUI.cs` e tradução em `HarborLocalization.cs`, separadas das rotinas de pesca, inventário e economia. O prólogo tem inglês como padrão e opção PT; a exploração livre legada ainda contém textos em português.

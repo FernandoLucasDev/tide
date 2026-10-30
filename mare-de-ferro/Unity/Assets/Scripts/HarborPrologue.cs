@@ -170,25 +170,5 @@ public partial class HarborGame {
             case Prologue.Radio:SetChapter(Prologue.Ending);break;
         }
     }
-    void DrawPrologue(float w,float h) {
-        Panel(new Rect(28,140,340,156));GUI.Label(new Rect(48,154,300,24),"UMA VAGA NO CAIS",small);
-        GUI.Label(new Rect(48,187,295,78),Objective(),new GUIStyle(body){fontSize=17});
-        GUI.Label(new Rect(48,264,295,22),OnTrainingDeck?"NOVATO  •  "+save.trainingPots+" / 3 covos guardados":"PRÓLOGO  •  progresso salvo por etapa",tiny);
-        Vector3 p=view.WorldToScreenPoint(TaskTarget()+Vector3.up*2.5f);
-        float scale=Mathf.Min(Screen.width/1440f,Screen.height/900f);
-        float x=Mathf.Clamp(p.x/scale,390,w-280),y=Mathf.Clamp((Screen.height-p.y)/scale,150,h-180);
-        if(p.z>0){GUI.color=new Color(1,.77f,.38f);GUI.Label(new Rect(x-15,y,170,28),"◆  "+Mathf.CeilToInt(HarborNavigation.Distance(captain.position,TaskTarget()))+" m",label);GUI.color=Color.white;}
-        if(HoldTask&&taskProgress>0){GUI.color=new Color(.9f,.64f,.3f);GUI.DrawTexture(new Rect(w/2-280,h-120,560*taskProgress,5),white);GUI.color=Color.white;}
-    }
-    void DrawPrologueJournal(float w) {
-        Panel(new Rect(w/2-290,180,580,460));
-        GUI.Label(new Rect(w/2-260,205,520,40),"MEU PRIMEIRO DIA",heading);
-        GUI.Label(new Rect(w/2-260,260,520,70),Objective(),body);
-        string notes="Ofício: novato do São Bento\nCovos guardados: "+save.trainingPots+" / 3\n";
-        notes+=Chapter>=Prologue.Dinner?"Diária recebida: 36 moedas\n":"Diária combinada: 36 moedas + jantar\n";
-        notes+=save.porcelainMemento?"Pista: xícara com o emblema do Boa Esperança.\nO ermitão fica no viveiro; não está à venda.":"Vim trabalhar no Boa Esperança. O barco sumiu.\nMara oferece abrigo; Celina, uma primeira saída.";
-        GUI.Label(new Rect(w/2-260,350,520,180),notes,body);
-        GUI.Label(new Rect(w/2-260,593,520,30),"TAB para fechar • o tempo está pausado",small);
-    }
 }
 }

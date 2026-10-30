@@ -2,6 +2,10 @@
 
 O relatório **build-report.txt** registra o resultado da compilação Windows no Unity 6000.0.85f1.
 
+## Interface do prólogo
+
+As capturas `ui-menu`, `ui-mara`, `ui-diario`, `ui-tripulacao`, `ui-portugues`, `ui-tripulacao-720p` e `ui-pausa-720p` mostram a aplicação da direção visual ao executável. Foram inspecionados retratos, leitura, recortes e disposição em 1440×900 e 1280×720. O teste do prólogo verifica também os assets, o idioma padrão, a troca EN/PT e a tradução de cada página de história. A troca de resolução revelou um erro no pivô da bússola; a transformação foi corrigida para preservar a escala da interface.
+
 ## Prólogo 0.3
 
 `--prologue-test` percorre a chegada ao cais, os encontros no porto, o convés e o encerramento usando o controlador real de caminhada e as funções de interação do jogo. **prologue-test.txt** registra os resultados. O teste usa `porto-prologue-test.json`, separado do progresso do jogador.

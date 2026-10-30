@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace MareDeFerro {
 public partial class HarborGame {
-    void ReadStory(){int limit=0;while(dialog!=""&&limit++<20)CloseDialog();Check(dialog=="","Conversation completes without trapping input");}
+    void ReadStory(){int limit=0;while(dialog!=""&&limit++<20){Check(Localize(dialog)!=dialog,"English translation exists for story page: "+dialogName);CloseDialog();}Check(dialog=="","Conversation completes without trapping input");}
     IEnumerator ApproachTask() {
         Vector3 target=TaskTarget();
         if(OnTrainingDeck) {
@@ -21,9 +21,21 @@ public partial class HarborGame {
         else yield return WalkRoute(target+Vector3.back*1.3f);
     }
     IEnumerator ValidatePrologue() {
-        yield return null;StartJourney();
+        yield return null;
+        yield return Photograph("ui-menu");
+        Check(english&&portraitAtlas&&coverTexture,"English default, crew atlas and approved harbor cover loaded");
+        StartJourney();
+        string firstPage=dialog;
+        Check(Localize(firstPage)!=firstPage,"Arrival is localized into English");
+        SetLanguage(false);Check(Localize(firstPage)==firstPage,"Portuguese preserves original story text");
+        yield return Photograph("ui-portugues");SetLanguage(true);
         Check(Chapter==Prologue.Arrival&&dialog!="","Fresh journey opens arrival for a job aboard the missing Boa Esperanca");
         yield return Photograph("prologo-chegada");ReadStory();
+        SetInventory(true);yield return Photograph("ui-diario");journalTab=2;yield return Photograph("ui-tripulacao");
+        Screen.SetResolution(1280,720,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.5f);
+        yield return Photograph("ui-tripulacao-720p");SetInventory(false);SetPaused(true);
+        yield return Photograph("ui-pausa-720p");SetPaused(false);
+        Screen.SetResolution(1440,900,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.5f);
         Check(Chapter==Prologue.Notice&&!TryBoard(),"Novice checks departures and cannot bypass training by boarding Andorinha");
         // Isolated recovery regression before the physically walked journey.
         PlacePlayer(new Vector3(-4.5f,-2,-4.5f));WalkStep(Vector3.zero,false,.02f);
@@ -56,6 +68,7 @@ public partial class HarborGame {
             } else TickPrologue(.02f,true,true);
             if(stage==Prologue.Sort&&save.trainingPots==2)yield return Photograph("prologo-ermitao");
             if(stage==Prologue.Dinner)yield return Photograph("prologo-jantar");
+            if(stage==Prologue.Mara)yield return Photograph("ui-mara");
             ReadStory();
             Check(Chapter!=stage,"Task advances exactly once: "+stage);
             Store();var disk=HarborStorage.Load(SavePath,out bool recovered);

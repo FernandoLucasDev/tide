@@ -48,10 +48,10 @@ public partial class HarborGame:MonoBehaviour {
         if(Input.GetKeyDown(KeyCode.Escape)) {if(dialog!="")CloseDialog();else if(inventory)SetInventory(false);else if(started)SetPaused(!paused);}
         if(!started||paused)return;
         if(Input.GetKeyDown(KeyCode.Tab)&&dialog=="")SetInventory(!inventory);
-        if(Input.GetKeyDown(KeyCode.C))overview=!overview;
-        zoom=Mathf.Clamp(zoom-Input.mouseScrollDelta.y*.07f,.65f,1.45f);
         if(dialog!="") {if(Input.GetKeyDown(KeyCode.E)||Input.GetKeyDown(KeyCode.Return))CloseDialog();return;}
         if(inventory)return;
+        if(Input.GetKeyDown(KeyCode.C))overview=!overview;
+        zoom=Mathf.Clamp(zoom-Input.mouseScrollDelta.y*.07f,.65f,1.45f);
         if(PrologueActive){Walk();TickPrologue(Time.deltaTime,Input.GetKey(KeyCode.E),Input.GetKeyDown(KeyCode.E));return;}
         if(fishing){TickFishing(Time.deltaTime,Input.GetKey(KeyCode.Space));if(Input.GetKeyDown(KeyCode.Q))CancelFishing();return;}
         if(aboard)Sail();else Walk();
@@ -169,7 +169,7 @@ public partial class HarborGame:MonoBehaviour {
         save.coins+=sum;save.sold+=count;save.hold.Clear();Store();
         ShowDialog("TOMÉ","Bom trabalho. "+count+" captura(s), "+sum+" moedas.\n\n"+(save.sold<=3?"Já dá para uma refeição quente. Mara vai fingir que não está orgulhosa.\n\nVocê completou sua primeira viagem. Pode continuar explorando a enseada e encontrando as criaturas dos covos.":"Pode deixar no balcão. Tem gente esperando o jantar, e você ainda tem mar pela frente."));return sum;
     }
-    void ShowDialog(string name,string text){dialogName=name;dialog=text;ApplyModalClock();}
+    void ShowDialog(string name,string text){dialogName=name;dialog=text;dialogueScroll=Vector2.zero;ApplyModalClock();}
     public void CloseDialog(){if(AdvanceStoryDialog())return;dialog="";ApplyModalClock();}
     public void SetPaused(bool value){paused=value;ApplyModalClock();}
     void SetInventory(bool value){inventory=value;ApplyModalClock();}
@@ -194,53 +194,6 @@ public partial class HarborGame:MonoBehaviour {
         var rt=new RenderTexture(width,height,24);var previous=RenderTexture.active;var target=cam.targetTexture;
         cam.targetTexture=rt;cam.Render();RenderTexture.active=rt;var image=new Texture2D(width,height,TextureFormat.RGB24,false);image.ReadPixels(new Rect(0,0,width,height),0,0);image.Apply();
         File.WriteAllBytes(path,image.EncodeToPNG());cam.targetTexture=target;RenderTexture.active=previous;DestroyImmediate(image);rt.Release();DestroyImmediate(rt);
-    }
-    void EnsureStyles() {
-        if(stylesReady)return;stylesReady=true;
-        panel=Solid(new Color(.045f,.105f,.115f,.96f));accent=Solid(new Color(.87f,.60f,.27f));white=Solid(Color.white);
-        Font font=Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-        label=new GUIStyle{font=font,fontSize=19,normal={textColor=new Color(.95f,.90f,.77f)}};
-        small=new GUIStyle(label){fontSize=15};tiny=new GUIStyle(label){fontSize=12};
-        heading=new GUIStyle(label){fontSize=24,fontStyle=FontStyle.Bold};
-        title=new GUIStyle(label){fontSize=71,fontStyle=FontStyle.Bold};
-        body=new GUIStyle(label){fontSize=19,wordWrap=true};
-        button=new GUIStyle(GUI.skin.button){font=font,fontSize=17,padding=new RectOffset(18,18,12,12),normal={background=Solid(new Color(.16f,.28f,.27f)),textColor=new Color(.97f,.90f,.72f)},hover={background=Solid(new Color(.27f,.39f,.34f)),textColor=Color.white},active={background=accent,textColor=new Color(.05f,.1f,.1f)}};
-    }
-    static Texture2D Solid(Color c){var t=new Texture2D(1,1);t.SetPixel(0,0,c);t.Apply();return t;}
-    void Panel(Rect r){GUI.DrawTexture(r,panel);GUI.DrawTexture(new Rect(r.x,r.y,3,r.height),accent);}
-    void OnGUI() {
-        EnsureStyles();float scale=Mathf.Min(Screen.width/1440f,Screen.height/900f);GUI.matrix=Matrix4x4.TRS(Vector3.zero,Quaternion.identity,Vector3.one*scale);
-        float w=Screen.width/scale,h=Screen.height/scale;
-        if(!started){
-            Panel(new Rect(55,h*.22f,450,465));
-            GUI.Label(new Rect(85,h*.22f+28,380,25),"UM PORTO. UMA VIDA. UM MAR INTEIRO.",tiny);
-            GUI.Label(new Rect(81,h*.22f+70,410,180),"MARÉ\nDE FERRO",title);
-            GUI.Label(new Rect(85,h*.22f+258,365,60),"Você veio por uma vaga num barco.\nO barco não voltou.",body);
-            if(GUI.Button(new Rect(85,h*.22f+350,300,49),save.prologueStage==0?"COMEÇAR PRÓLOGO  →":"CONTINUAR VIAGEM  →",button))StartJourney();
-            GUI.Label(new Rect(85,h*.22f+417,365,22),"PORTO DAS VELAS  /  PRÓLOGO 0.3",tiny);
-            GUI.Label(new Rect(w-370,h-43,335,26),"Arte e exploração • uma primeira enseada",small);return;
-        }
-        Panel(new Rect(28,25,340,96));GUI.Label(new Rect(48,39,300,30),OnTrainingDeck?"SÃO BENTO":"PORTO DAS VELAS",heading);
-        GUI.Label(new Rect(48,79,300,25),PrologueActive?PrologueTime:aboard?"ENSEADA  /  ANDORINHA":"FIM DE TARDE  /  NO CAIS",small);
-        Panel(new Rect(w-255,25,226,96));GUI.Label(new Rect(w-233,39,200,28),save.coins+"  moedas",heading);GUI.Label(new Rect(w-233,79,200,25),save.hold.Count+" / "+HoldCapacity+" espaços no porão",small);
-        GUI.Label(new Rect(30,h-36,w-60,25),fishing?"ESPAÇO  puxar / soltar para aliviar    Q  cancelar recolhimento    ESC  pausa":aboard?"W/S  motor    A/D  leme    ESPAÇO  frear    E  interagir    C  câmera    TAB  porão    ESC  pausa":"WASD / setas  caminhar    SHIFT  correr    E  interagir    C  vista do porto    RODA  zoom    ESC  pausa",small);
-        if(!fishing&&dialog==""&&!paused&&!inventory) {
-            string prompt=PrologueActive?ProloguePrompt():Prompt();if(prompt!=""){Panel(new Rect(w/2-300,h-111,600,53));GUI.Label(new Rect(w/2-280,h-96,560,29),prompt,label);}
-            if(aboard){GUI.Label(new Rect(w-230,140,210,27),Mathf.Abs(speed).ToString("0.0")+" • motor",label);DrawCompass(w,h);DrawChart(w);}
-            if(PrologueActive)DrawPrologue(w,h);
-            else if(save.sold==0||save.hold.Count>0){Panel(new Rect(28,140,310,92));GUI.Label(new Rect(48,152,275,22),"A PRIMEIRA VIAGEM",small);GUI.Label(new Rect(48,183,270,44),save.hold.Count>0?(aboard?"Volte ao embarque marcado\nna carta e venda ao Tomé.":"Leve a captura ao balcão\nde peixe do Tomé."):(aboard?"Siga até uma boia amarela.\nFreie com ESPAÇO e use E.":"Siga pelo píer até o embarque.\nUse E ao lado da Andorinha."),small);}
-        }
-        if(Time.unscaledTime<toastUntil&&dialog==""){Panel(new Rect(w/2-355,245,710,56));GUI.Label(new Rect(w/2-335,261,670,35),toast,small);}
-        if(fishing)FishingUI(w,h);
-        if(dialog!=""&&!paused) {
-            float bh=286;Panel(new Rect(w/2-410,h-bh-65,820,bh));
-            GUI.Label(new Rect(w/2-380,h-bh-43,740,32),dialogName,heading);
-            GUI.Label(new Rect(w/2-380,h-bh+5,740,174),dialog,body);
-            if(GUI.Button(new Rect(w/2+202,h-126,175,43),"CONTINUAR  [E]",button))CloseDialog();
-        }
-        if(inventory&&PrologueActive)DrawPrologueJournal(w);
-        if(inventory&&!PrologueActive){Panel(new Rect(w/2-290,180,580,460));GUI.Label(new Rect(w/2-260,205,520,40),"DIÁRIO DE BORDO",heading);GUI.Label(new Rect(w/2-260,255,520,30),"Capturas: "+save.totalCatches+"  •  Vendidas: "+save.sold,small);if(save.hold.Count==0)GUI.Label(new Rect(w/2-260,310,520,45),"Porão vazio. Há três boias na enseada.",body);inventoryScroll=GUI.BeginScrollView(new Rect(w/2-260,305,520,265),inventoryScroll,new Rect(0,0,490,Mathf.Max(265,save.hold.Count*31)));for(int i=0;i<save.hold.Count;i++)GUI.Label(new Rect(0,i*31,490,30),save.hold[i].name+"  ·  "+save.hold[i].value+" moedas",small);GUI.EndScrollView();GUI.Label(new Rect(w/2-260,593,520,30),save.porcelainMemento?"Lembrança: ermitão da xícara azul • TAB fechar":"TAB para fechar  •  F8 para fotografar",small);}
-        if(paused){Panel(new Rect(w/2-230,h/2-160,460,320));GUI.Label(new Rect(w/2-200,h/2-125,400,40),"UM RESPIRO NO CAIS",heading);if(GUI.Button(new Rect(w/2-200,h/2-55,400,48),"VOLTAR AO MAR",button))SetPaused(false);if(GUI.Button(new Rect(w/2-200,h/2+8,400,48),"SALVAR PROGRESSO",button)&&Store())Notify("Progresso salvo.");if(GUI.Button(new Rect(w/2-200,h/2+71,400,48),"SAIR",button)&&Store())Application.Quit();}
     }
     string Prompt() {
         if(aboard){int i=NearestSpot();if(i>=0)return save.hold.Count>=HoldCapacity?"Porão cheio • volte ao mercado":Time.time<readyAt[i]?"Covo de molho • "+Mathf.CeilToInt(readyAt[i]-Time.time)+" s":Mathf.Abs(speed)>1.2f?"[ESPAÇO] Frear para recolher":"[E] Recolher covo";if(HarborNavigation.Distance(vessel.position,HarborNavigation.Mooring)<=5.5f)return Mathf.Abs(speed)>1.2f?"[ESPAÇO] Frear para atracar":"[E] Atracar e desembarcar";return save.hold.Count>0?"Porto • "+Mathf.RoundToInt(HarborNavigation.Distance(vessel.position,HarborNavigation.Mooring))+" m • siga a carta":"Procure as bandeirolas amarelas da enseada";}

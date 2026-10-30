@@ -1,6 +1,6 @@
 # Maré de Ferro — prólogo 0.3
 
-Abra **Builds/Windows/MareDeFerro.exe** e clique em **Começar prólogo** ou **Continuar viagem**. Não é necessário abrir o Unity para jogar. O atalho **JOGAR.bat** também abre esse executável.
+Abra **Builds/Windows/MareDeFerro.exe** e clique em **Begin your story** ou **Continue your voyage**. Não é necessário abrir o Unity para jogar. O atalho **JOGAR.bat** também abre esse executável. O inglês é o idioma padrão; escolha **PT** no menu inicial ou na pausa para jogar o prólogo em português.
 
 ## Seu primeiro dia
 
@@ -10,7 +10,7 @@ No São Bento, Celina assume a navegação. Você caminha pelo convés: prepare 
 
 O terceiro covo traz um ermitão numa xícara com o emblema do Boa Esperança, o barco desaparecido. Guarde-o no viveiro. Volte com Celina, receba **36 moedas** de Tomé, participe do jantar e busque o rádio no fim do píer. Espere a sequência das três pancadas e leia o encerramento.
 
-**Tab** abre o diário com a tarefa atual. Cada etapa concluída é salva automaticamente. Ao retomar, você aparece num ponto seguro da área; uma espera de covo ainda em andamento reinicia em oito segundos. O ermitão é uma lembrança protegida e não entra na venda de capturas.
+**Tab** abre o diário com abas de viagem, capturas e pessoas. Os diálogos mostram retratos; páginas longas permitem rolagem com o mouse. **E** ou **Continue** avança a conversa. Cada etapa concluída é salva automaticamente. Ao retomar, você aparece num ponto seguro da área; uma espera de covo ainda em andamento reinicia em oito segundos. O ermitão é uma lembrança protegida e não entra na venda de capturas.
 
 ## Exploração livre depois do prólogo
 
