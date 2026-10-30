@@ -8,6 +8,8 @@ public static class HarborStorage {
         if(string.IsNullOrWhiteSpace(json)||!json.TrimStart().StartsWith("{")||!json.Contains("\"coins\""))throw new InvalidDataException("Arquivo incompleto.");
         var data=JsonUtility.FromJson<HarborSave>(json);
         if(data==null||data.coins<0||data.totalCatches<0||data.sold<0)throw new InvalidDataException("Progresso inválido.");
+        if(data.prologueStage<0||data.prologueStage>(int)HarborGame.Prologue.Complete||data.trainingPots<0||data.trainingPots>3)throw new InvalidDataException("Etapa do prólogo inválida.");
+        data.version=3;
         if(data.hold==null)data.hold=new System.Collections.Generic.List<Catch>();
         foreach(var item in data.hold)if(item==null||string.IsNullOrWhiteSpace(item.name)||item.value<0)throw new InvalidDataException("Captura inválida.");
         if(data.potRemaining==null||data.potRemaining.Length!=3)data.potRemaining=new float[3];

@@ -2,15 +2,19 @@
 
 Versão 0.3 • Proposta de história e sistemas narrativos.
 
-Este documento consolida a nova direção: trabalho físico no convés, carreira marítima, navegação contra ondas, temporadas, vilas e mistério. Prevalece sobre as propostas narrativas e de progressão do brief 0.1. Estes elementos ainda não estão implementados no protótipo.
+Este documento consolida a nova direção: trabalho físico no convés, carreira marítima, navegação contra ondas, temporadas, vilas e mistério. Prevalece sobre as propostas narrativas e de progressão do brief 0.1. O prólogo está implementado na interface atual; os demais capítulos e sistemas continuam como direção de produção.
 
-> Você começa tentando sobreviver ao mar. Termina responsável por quem confiou em você para atravessá-lo.
+> Você veio por uma vaga num barco. Um dia, uma frota inteira vai esperar pela sua ordem.
 
 ## A história que queremos contar
 
-Uma pessoa sobrevive a um naufrágio e é acolhida em Porto das Velas. Sem dinheiro, aceita preparar iscas no barco de Celina. Sua primeira conquista é uma refeição paga com o próprio trabalho. A segunda é alguém guardar um lugar para ela à mesa.
+Uma pessoa gasta suas últimas economias numa passagem de balsa para Porto das Velas. Traz uma oferta de trabalho para a temporada de caranguejos, assinada pelo capitão Raul, do Boa Esperança. Ao desembarcar, encontra o lugar do barco vazio. A viagem anterior deveria ter terminado há três dias. Ninguém atende pelo rádio.
 
-O jogador escolhe nome, aparência e pronomes. Pode definir uma lembrança de sua vida anterior e por que embarcou, sem que isso lhe dê uma ascendência especial. Sua importância nasce das relações e decisões que constrói.
+A vaga era real. O recrutamento foi feito antes do desaparecimento, sem uma armadilha destinada ao protagonista. Para quem chega, é um emprego que sumiu; para os moradores, são vizinhos que ainda não voltaram. Alguns falam em atraso, outros já evitam olhar para as famílias no cais.
+
+Sem dinheiro para a passagem de volta, o protagonista aceita o abrigo de Mara e uma saída de experiência com Celina. Sua primeira conquista é uma refeição paga com o próprio trabalho. A segunda é alguém guardar um lugar para ela à mesa. A investigação cresce junto da convivência: o jogador passa a conhecer as pessoas que esperam pela tripulação do Boa Esperança.
+
+O jogador escolhe nome, aparência e pronomes. Pode definir uma lembrança de sua vida anterior e por que aceitou o emprego: independência, sustento da família ou mudança de vida. Sua importância nasce das relações e decisões que constrói, sem ascendência especial, amnésia ou destino escolhido.
 
 Durante uma madrugada de trabalho, três pancadas sobem pelo casco. O rádio transmite o pedido de socorro de um navio desaparecido há dezoito anos: o Santa Aurora. O capitão manda desligar o aparelho. No porto, todos conhecem a história; ninguém conta a mesma versão.
 
@@ -28,9 +32,9 @@ O Santa Aurora levava técnicos, pescadores e equipamentos para a operação. Os
 
 Mara cortou uma linha de reboque para impedir que dois barcos afundassem juntos. Salvou sua tripulação e deixou o Santa Aurora para trás. Sua decisão tinha uma razão real; sua culpa vem também do silêncio posterior. Ela aceitou a versão oficial e nunca contou às famílias que ainda havia vozes no rádio.
 
-No presente, a empresa reativou os emissores. O navio do protagonista cruzou a rota do Rei durante esse teste e naufragou. Os sobreviventes foram vítimas de uma decisão industrial, sem serem escolhidos por uma profecia.
+No presente, a empresa reativou os emissores. O Boa Esperança cruzou a rota do Rei durante esse teste e naufragou na última viagem antes de receber os novos contratados. O capitão Raul e sua tripulação morreram. A empresa ocultou os registros do teste e tratou o desaparecimento como falha de navegação. O protagonista nunca esteve a bordo: o mesmo emprego que o levou ao porto o aproxima das famílias que precisam de uma resposta.
 
-As transmissões são registros, não pessoas vivas no fundo. A rede sobrepõe o socorro antigo a sons recentes, incluindo a voz do protagonista durante seu próprio naufrágio: “Tem gente viva lá embaixo”. Lia demonstra isso comparando as repetições. Descobrir a verdade dói: não haverá resgate milagroso dos mortos. Ainda há pessoas vivas que podem ser salvas da repetição do desastre.
+As transmissões são registros, não pessoas vivas no fundo. A rede sobrepõe o socorro antigo ao pedido recente do capitão Raul: “Tem gente viva lá embaixo”. Lia demonstra isso comparando as repetições. Descobrir a verdade dói: não haverá resgate milagroso dos mortos. Ainda há pessoas vivas que podem ser salvas da repetição do desastre.
 
 O Rei não é um juiz moral nem um animal inteiramente compreensível. Pode matar, fugir e proteger sua passagem sem intenção humana. Libertá-lo exige primeiro capturá-lo e imobilizar os emissores: o confronto final acontece em todos os desfechos.
 
@@ -73,9 +77,11 @@ Cada promoção permite delegar atividades já aprendidas. O jogador ainda pode 
 
 Cada mar permanece visitável e ganha mudanças após seu capítulo. Equipamento, conhecimento e relações abrem rotas; uma experiência adquirida tem uso real na travessia seguinte.
 
-### Prólogo — Aquilo que a maré devolveu
+### Prólogo — Uma vaga no cais
 
-O protagonista acorda na praia. Mara oferece abrigo em troca de ajuda, Dália empresta roupas e Celina oferece uma saída de experiência. Pela primeira vez, o jogador prepara um covo, espera seu retorno e divide a captura. Entre os animais vem um pequeno ermitão dentro de uma xícara da embarcação naufragada.
+O protagonista desembarca da balsa e compara sua oferta de trabalho ao quadro de embarques: Boa Esperança, retorno atrasado. Mara confirma que o barco está desaparecido e oferece abrigo, Dália empresta um impermeável de trabalho e Celina oferece uma saída de experiência. Pela primeira vez, o jogador prepara um covo, espera seu retorno e divide a captura.
+
+Entre os animais vem um pequeno ermitão dentro de uma xícara marcada com três ondas azuis, o mesmo emblema da oferta de emprego. A louça pode ter caído de bordo em outra viagem; sozinha, não prova um naufrágio. Celina registra onde o covo foi lançado e leva a descoberta a Mara. O mistério nasce de uma evidência encontrada durante o trabalho, não de uma visão exclusiva do protagonista.
 
 O prólogo termina no jantar da tripulação. Do rádio desligado vem uma pancada. Depois outra. Depois a terceira.
 
@@ -121,7 +127,7 @@ O perigo é perder orientação num mar aparentemente imóvel. Sons, faróis e c
 
 Lia compara transmissões e prova que as vozes são registros. Em Santa Bruma, o marinheiro Elias revela o objetivo da Coroa. Uma missão opcional o ajuda a encontrar a filha, agora adulta, que cresceu acreditando que ele morreu. Ela pode aceitar contato sem oferecer reconciliação imediata.
 
-O jogador ouve seu próprio socorro. A localização da gravação conduz aos destroços de seu naufrágio, onde encontra evidências do teste recente e pertences que permitem encerrar sua vida anterior ou preservá-la.
+O jogador identifica o pedido de socorro de Raul pela gravação de recrutamento guardada no porto. A localização do eco conduz aos destroços do Boa Esperança, onde registros e danos no casco confirmam o teste recente e a perda da tripulação. Devolver objetos às famílias dá peso à investigação. O contrato deixa de ser apenas uma promessa de salário: tem os nomes das pessoas com quem o jogador teria trabalhado.
 
 O capítulo termina com a primeira partida de seu pesqueiro. Celina permanece no cais. Pela primeira vez, ninguém a bordo vai escolher o rumo pelo jogador.
 
@@ -156,6 +162,12 @@ No momento decisivo, uma transmissão reproduz a ordem que Mara deu dezoito anos
 O epílogo mostra cada pessoa, barcos que retornaram, destinos das provas e a próxima temporada. A campanha principal termina; o mundo pode continuar jogável.
 
 ## Personagens: pessoas antes de pistas
+
+### Raul — o capitão que ofereceu a primeira vaga
+
+Comandava o Boa Esperança e costumava contratar uma pessoa sem experiência a cada temporada. Dizia que alguém tinha feito isso por ele. Gostava de café forte, pintou o emblema do barco em todas as xícaras e deixava recados de recrutamento mais longos do que precisava.
+
+O protagonista o conhece pelas pessoas que trabalharam com ele, pelos registros de bordo e pela oferta que guardou. Não há parentesco oculto nem convite sobrenatural: Raul pretendia receber mais um novato. Descobrir seu destino significa dar uma resposta às famílias da tripulação, além de entender o que aconteceu com a própria oportunidade de trabalho.
 
 ### Mara — a capitã que ficou em terra
 

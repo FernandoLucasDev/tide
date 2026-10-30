@@ -2,6 +2,22 @@
 
 O relatório **build-report.txt** registra o resultado da compilação Windows no Unity 6000.0.85f1.
 
+## Prólogo 0.3
+
+`--prologue-test` percorre a chegada ao cais, os encontros no porto, o convés e o encerramento usando o controlador real de caminhada e as funções de interação do jogo. **prologue-test.txt** registra os resultados. O teste usa `porto-prologue-test.json`, separado do progresso do jogador.
+
+- Cada estação precisa ser alcançável com os colisores reais.
+- As tarefas respeitam alcance, tecla mantida, interrupção e pausa.
+- Três covos produzem duas capturas comerciais e uma lembrança protegida.
+- Etapas e lembrança sobrevivem à gravação/leitura em disco; uma retomada no convés restaura a isca transportada.
+- O pagamento ocorre uma única vez; saves antigos conservam seu dinheiro.
+- Uma regressão isolada simula queda do píer e verifica recuperação num ponto seguro do porto.
+- As três pancadas precedem o encerramento, que libera a navegação da Andorinha.
+
+**prologo-chegada.png**, **prologo-conves.png**, **prologo-ermitao.png**, **prologo-jantar.png** e **prologo-tres-pancadas.png** mostram a interface atual no executável. O teste automatiza os comandos, mas a avaliação de ritmo, leitura e sensação de trabalho continua sendo feita ao jogar.
+
+## Base e exploração livre
+
 O executável aceita `--smoke-test` para executar um percurso automatizado que exercita:
 
 - Caminhada da posição inicial ao embarque usando o CharacterController e os colisores reais.

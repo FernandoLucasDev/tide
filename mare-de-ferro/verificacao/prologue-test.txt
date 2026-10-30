@@ -1,0 +1,153 @@
+PASS: Fresh journey opens arrival for a job aboard the missing Boa Esperanca
+PASS: Conversation completes without trapping input
+PASS: Novice checks departures and cannot bypass training by boarding Andorinha
+PASS: Falling off pier recovers at safe harbor spawn
+PASS: New arrival has spent their savings on the ferry passage
+PASS: Walk to reachable task: Notice / pot 0
+PASS: Conversation completes without trapping input
+PASS: Task advances exactly once: Notice
+PASS: Checkpoint roundtrip: Mara
+PASS: Walk to reachable task: Mara / pot 0
+PASS: Conversation completes without trapping input
+PASS: Task advances exactly once: Mara
+PASS: Checkpoint roundtrip: Dalia
+PASS: Walk to reachable task: Dalia / pot 0
+PASS: Conversation completes without trapping input
+PASS: Task advances exactly once: Dalia
+PASS: Checkpoint roundtrip: Celina
+PASS: Walk to reachable task: Celina / pot 0
+PASS: Conversation completes without trapping input
+PASS: Task advances exactly once: Celina
+PASS: Checkpoint roundtrip: Board
+PASS: Walk to reachable task: Board / pot 0
+PASS: Conversation completes without trapping input
+PASS: Task advances exactly once: Board
+PASS: Checkpoint roundtrip: Bait
+PASS: Walk to reachable task: Bait / pot 0
+PASS: Pause freezes manual work: Bait
+PASS: Releasing E resets unfinished work: Bait
+PASS: Conversation completes without trapping input
+PASS: Task advances exactly once: Bait
+PASS: Checkpoint roundtrip: LoadPot
+PASS: Walk to reachable task: LoadPot / pot 0
+PASS: Pause freezes manual work: LoadPot
+PASS: Releasing E resets unfinished work: LoadPot
+PASS: Conversation completes without trapping input
+PASS: Task advances exactly once: LoadPot
+PASS: Checkpoint roundtrip: Soak
+PASS: Pause freezes soaking timer
+PASS: Journal freezes soaking timer
+PASS: Soaking finishes and unlocks supervised winch
+PASS: Walk to reachable task: Winch / pot 0
+PASS: Pause freezes manual work: Winch
+PASS: Releasing E resets unfinished work: Winch
+PASS: Conversation completes without trapping input
+PASS: Task advances exactly once: Winch
+PASS: Checkpoint roundtrip: Sort
+PASS: Walk to reachable task: Sort / pot 0
+PASS: Conversation completes without trapping input
+PASS: Task advances exactly once: Sort
+PASS: Checkpoint roundtrip: Stow
+PASS: Walk to reachable task: Stow / pot 0
+PASS: Pause freezes manual work: Stow
+PASS: Releasing E resets unfinished work: Stow
+PASS: Conversation completes without trapping input
+PASS: Task advances exactly once: Stow
+PASS: Checkpoint roundtrip: Secure
+PASS: Walk to reachable task: Secure / pot 1
+PASS: Pause freezes manual work: Secure
+PASS: Releasing E resets unfinished work: Secure
+PASS: Conversation completes without trapping input
+PASS: Task advances exactly once: Secure
+PASS: Checkpoint roundtrip: Bait
+PASS: Walk to reachable task: Bait / pot 1
+PASS: Pause freezes manual work: Bait
+PASS: Releasing E resets unfinished work: Bait
+PASS: Conversation completes without trapping input
+PASS: Task advances exactly once: Bait
+PASS: Checkpoint roundtrip: LoadPot
+PASS: Reload mid-task restores held bait and training location
+PASS: Walk to reachable task: LoadPot / pot 1
+PASS: Pause freezes manual work: LoadPot
+PASS: Releasing E resets unfinished work: LoadPot
+PASS: Conversation completes without trapping input
+PASS: Task advances exactly once: LoadPot
+PASS: Checkpoint roundtrip: Soak
+PASS: Pause freezes soaking timer
+PASS: Journal freezes soaking timer
+PASS: Soaking finishes and unlocks supervised winch
+PASS: Walk to reachable task: Winch / pot 1
+PASS: Pause freezes manual work: Winch
+PASS: Releasing E resets unfinished work: Winch
+PASS: Conversation completes without trapping input
+PASS: Task advances exactly once: Winch
+PASS: Checkpoint roundtrip: Sort
+PASS: Walk to reachable task: Sort / pot 1
+PASS: Conversation completes without trapping input
+PASS: Task advances exactly once: Sort
+PASS: Checkpoint roundtrip: Stow
+PASS: Walk to reachable task: Stow / pot 1
+PASS: Pause freezes manual work: Stow
+PASS: Releasing E resets unfinished work: Stow
+PASS: Conversation completes without trapping input
+PASS: Task advances exactly once: Stow
+PASS: Checkpoint roundtrip: Bait
+PASS: Walk to reachable task: Bait / pot 2
+PASS: Pause freezes manual work: Bait
+PASS: Releasing E resets unfinished work: Bait
+PASS: Conversation completes without trapping input
+PASS: Task advances exactly once: Bait
+PASS: Checkpoint roundtrip: LoadPot
+PASS: Walk to reachable task: LoadPot / pot 2
+PASS: Pause freezes manual work: LoadPot
+PASS: Releasing E resets unfinished work: LoadPot
+PASS: Conversation completes without trapping input
+PASS: Task advances exactly once: LoadPot
+PASS: Checkpoint roundtrip: Soak
+PASS: Pause freezes soaking timer
+PASS: Journal freezes soaking timer
+PASS: Soaking finishes and unlocks supervised winch
+PASS: Walk to reachable task: Winch / pot 2
+PASS: Pause freezes manual work: Winch
+PASS: Releasing E resets unfinished work: Winch
+PASS: Conversation completes without trapping input
+PASS: Task advances exactly once: Winch
+PASS: Checkpoint roundtrip: Sort
+PASS: Walk to reachable task: Sort / pot 2
+PASS: Conversation completes without trapping input
+PASS: Task advances exactly once: Sort
+PASS: Checkpoint roundtrip: Stow
+PASS: Walk to reachable task: Stow / pot 2
+PASS: Pause freezes manual work: Stow
+PASS: Releasing E resets unfinished work: Stow
+PASS: Conversation completes without trapping input
+PASS: Task advances exactly once: Stow
+PASS: Checkpoint roundtrip: Return
+PASS: Walk to reachable task: Return / pot 3
+PASS: Conversation completes without trapping input
+PASS: Task advances exactly once: Return
+PASS: Checkpoint roundtrip: Deliver
+PASS: Walk to reachable task: Deliver / pot 3
+PASS: Conversation completes without trapping input
+PASS: Task advances exactly once: Deliver
+PASS: Checkpoint roundtrip: Dinner
+PASS: Walk to reachable task: Dinner / pot 3
+PASS: Conversation completes without trapping input
+PASS: Task advances exactly once: Dinner
+PASS: Checkpoint roundtrip: Radio
+PASS: Walk to reachable task: Radio / pot 3
+PASS: Conversation completes without trapping input
+PASS: Task advances exactly once: Radio
+PASS: Checkpoint roundtrip: Ending
+PASS: Pause cannot skip final sound sequence
+PASS: Exactly three audible knocks lead to the ending conversation
+PASS: Conversation completes without trapping input
+PASS: Entire prologue reaches free exploration
+PASS: Three pots and 36-coin wage awarded exactly once
+PASS: Story hermit is protected from sale and does not occupy commercial hold
+PASS: Repeated completion cannot duplicate wages
+PASS: Finishing prologue unlocks existing free sailing
+PASS: Legacy economy preserved while new prologue becomes available
+PASS: Ending and keepsake survive disk reload
+PASS: Full prologue exercised using movement, interactions, dialog, audio timing and persistence
+2026-10-30T11:45:11.0523563Z

@@ -1,6 +1,6 @@
 # Tide · Maré de Ferro
 
-Protótipo de uma aventura de pesca, vida em comunidade e comando de embarcações. Um sobrevivente de naufrágio encontra abrigo em Porto das Velas e começa a construir sua vida no mar.
+Protótipo de uma aventura de pesca, vida em comunidade e comando de embarcações. Você chega a Porto das Velas por uma oferta de emprego, mas o barco que o contratou desapareceu. Um trabalho com Celina começa sua vida no mar e a investigação do Boa Esperança.
 
 ![Protótipo real de Porto das Velas](mare-de-ferro/verificacao/porto-interface.png)
 
@@ -18,6 +18,9 @@ No editor, use **Maré de Ferro → Criar cena e gerar Windows**. O executável 
 
 ## O que já funciona
 
+- Prólogo completo: chegada por um emprego no Boa Esperança desaparecido, acolhimento no porto, trabalho no São Bento, jantar e três pancadas no rádio.
+- Três ciclos de trabalho no convés com caminhada entre bancada, covo, guincho, triagem e porão; amarração de carga e ermitão protegido no viveiro.
+- Objetivos, diário, diálogos em sequência e salvamento por etapa; diária de 36 moedas e exploração livre liberada ao concluir.
 - Caminhada pelo cais, câmera e diálogos iniciais.
 - Embarque, navegação na enseada e desembarque.
 - Três covos, minigame de tensão e quatro tipos de captura no inventário.
@@ -33,6 +36,7 @@ O visual é uma primeira construção procedural, ainda distante do nível de de
 - [Bíblia narrativa: mistério, mares, hierarquia e personagens](mare-de-ferro/BIBLIA-NARRATIVA.md)
 - [Brief criativo e direção de arte](mare-de-ferro/BRIEF-CRIATIVO.md)
 - [Controles e primeira viagem](mare-de-ferro/COMO-JOGAR.md)
+- [Prólogo implementado e critérios de validação](mare-de-ferro/PROLOGO-JOGAVEL.md)
 - [Validação da base e ajustes da versão 0.2](mare-de-ferro/BASE-JOGAVEL.md)
 - [Artes conceituais](mare-de-ferro/LEIA-ME.md)
 - [Prompts das imagens geradas por IA](mare-de-ferro/PROMPTS-ARTE.md)
@@ -40,7 +44,7 @@ O visual é uma primeira construção procedural, ainda distante do nível de de
 
 ## Próximas etapas recomendadas
 
-1. Ajustar câmera, navegação, interação e sensação do guincho com testes de jogo.
+1. Jogar o prólogo e calibrar duração das tarefas, ritmo dos diálogos e orientação no convés.
 2. Produzir um pequeno trecho do cais com qualidade visual próxima da referência: modelos, materiais, água e iluminação.
 3. Criar a interface definitiva para esse mesmo trecho: diálogo, captura, mercado e diário.
 4. Completar uma temporada curta com progressão de barco e um capitão rival.

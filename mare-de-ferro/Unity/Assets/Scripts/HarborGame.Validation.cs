@@ -14,9 +14,9 @@ public partial class HarborGame {
     }
     IEnumerator RunValidation() {
         Directory.CreateDirectory(ValidationDirectory);
-        string report=Path.Combine(ValidationDirectory,"runtime-test.txt");
+        string report=Path.Combine(ValidationDirectory,prologueTesting?"prologue-test.txt":"runtime-test.txt");
         File.WriteAllText(report,"RUNNING: base validation\n");
-        var stack=new Stack<IEnumerator>();stack.Push(ValidateBase());
+        var stack=new Stack<IEnumerator>();stack.Push(prologueTesting?ValidatePrologue():ValidateBase());
         while(stack.Count>0) {
             object next=null;bool moved=false;Exception failure=null;
             try {moved=stack.Peek().MoveNext();if(moved)next=stack.Peek().Current;}catch(Exception e){failure=e;}
@@ -59,6 +59,7 @@ public partial class HarborGame {
         yield return new WaitForSecondsRealtime(.3f);
     }
     IEnumerator ValidateBase() {
+        save.coins=40;save.prologueStage=(int)Prologue.Complete;SyncPrologueWorld();
         yield return null;StartJourney();CloseDialog();
         Check(!TryBoard(),"Cannot board from the starting position");
         yield return WalkRoute(HarborNavigation.Landing);
@@ -120,12 +121,12 @@ public partial class HarborGame {
         Check(!HarborNavigation.CanOccupy(new Vector3(-2.5f,0,-10),90),"Hull width rejects pier intersection");
 
         foreach(int fps in new[]{30,60,120}) {
-            save=new HarborSave();vessel.position=HarborWorld.FishingSpots[1];speed=0;readyAt[1]=0;
+            save=new HarborSave{prologueStage=(int)Prologue.Complete};vessel.position=HarborWorld.FishingSpots[1];speed=0;readyAt[1]=0;
             Check(BeginFishing(1),"Start controlled winch at "+fps+" Hz");
             for(int i=0;i<fps*35&&fishing;i++)TickFishing(1f/fps,tension<.63f);
             Check(save.hold.Count==1&&!fishing,"Winch succeeds at "+fps+" Hz");CloseDialog();
         }
-        save=new HarborSave();readyAt[1]=0;Check(BeginFishing(1),"Start overload scenario");
+        save=new HarborSave{prologueStage=(int)Prologue.Complete};readyAt[1]=0;Check(BeginFishing(1),"Start overload scenario");
         for(int i=0;i<1000&&fishing;i++)TickFishing(1f/60,true);
         Check(!fishing&&save.hold.Count==0&&readyAt[1]>Time.time,"Overload fails safely, grants no catch and sets retry delay");
         var cooldownSave=HarborStorage.Load(SavePath,out recovered);Check(cooldownSave.potRemaining[1]>0,"Retry delay is persisted");

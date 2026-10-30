@@ -5,11 +5,11 @@
 
 **Estado:** proposta criativa para discussão. Nome, números e escolhas de produção ainda podem mudar. As imagens desta pasta são artes conceituais, não capturas de um jogo implementado.
 
-> Você chegou à praia sem um barco. Um dia, uma frota inteira vai esperar pela sua ordem.
+> Você veio por uma vaga num barco. Um dia, uma frota inteira vai esperar pela sua ordem.
 
 ## 1. A experiência
 
-Uma aventura de pesca, vida em comunidade e comando no mar. Após sobreviver a um naufrágio, uma pessoa encontra abrigo em Porto das Velas. Pescar garante a próxima refeição; aprender o ofício, construir relações e enfrentar temporadas comerciais permite conquistar um barco, uma tripulação e uma frota. Nas profundezas, um caranguejo colossal guarda as marcas da indústria responsável pelo desastre.
+Uma aventura de pesca, vida em comunidade e comando no mar. Uma pessoa chega a Porto das Velas por uma oferta de trabalho, mas o Boa Esperança, que a contratou, desapareceu. Mara oferece abrigo e Celina, uma primeira saída. Aprender o ofício, construir relações e enfrentar temporadas comerciais permite conquistar um barco, uma tripulação e uma frota. Nas profundezas, um caranguejo colossal guarda as marcas da indústria responsável pelo desaparecimento.
 
 **Promessa emocional:** construir uma vida num lugar que vale a pena proteger e descobrir que tipo de capitão você será quando outras vidas dependerem das suas decisões.
 
@@ -28,13 +28,13 @@ Uma aventura de pesca, vida em comunidade e comando no mar. Após sobreviver a u
 ## 3. Estrutura narrativa
 
 ### Ato I — A pessoa que chegou com a maré
-Criação de nome, aparência e pronomes. O protagonista acorda na praia após um naufrágio. Mara oferece abrigo num galpão e ensina pesca costeira. Pequenos trabalhos apresentam a comunidade. Recuperar um bote e conquistar uma licença marca o primeiro pertencimento. Um gravador recuperado contém a voz do protagonista: “Tem gente viva lá embaixo.”
+Criação de nome, aparência e pronomes. O protagonista chega de balsa, tendo gasto suas economias para assumir uma vaga no Boa Esperança. O barco não voltou. Mara oferece abrigo, Dália empresta um impermeável e Celina ensina o trabalho de novato no São Bento. Um ermitão dentro de uma xícara com o emblema do barco desaparecido é a primeira pista concreta. O arco completo segue a bíblia narrativa.
 
 ### Ato II — O peso de um barco
 Primeiras temporadas de caranguejos, contratação de tripulantes e viagens de vários dias. A concorrência revela as pressões econômicas do porto. A investigação leva ao navio naufragado: seus botes permanecem presos, e há evidências de uma operação encoberta.
 
 ### Ato III — A temporada vermelha
-A pesca em alto-mar aproxima o jogador das frotas e da companhia Horizonte Azul. O Rei dos Reis, chamado King-Crab King nos registros da operação, começa a interferir nos pesqueiros. Mara revela sua participação numa expedição anterior. A companhia explorou e feriu um animal antigo com dispositivos de atração; o naufrágio do protagonista está ligado à retomada do programa.
+A pesca em alto-mar aproxima o jogador das frotas e da companhia Horizonte Azul. O Rei dos Reis, chamado King-Crab King nos registros da operação, começa a interferir nos pesqueiros. Mara revela sua participação numa expedição anterior. A companhia explorou e feriu um animal antigo com dispositivos de atração; o desaparecimento do Boa Esperança está ligado à retomada do programa. O protagonista nunca esteve a bordo.
 
 ### Ato IV — A última maré
 O jogador reúne uma frota para capturar o Rei antes que ele atravesse o canal do porto, atraído por uma estação reativada. O clímax usa navegação, cabos, guinchos e decisões de comando. Depois de imobilizá-lo, pode abatê-lo, entregá-lo à companhia ou retirar os dispositivos e libertá-lo. Os desfechos mostram consequências econômicas, ambientais e pessoais.
