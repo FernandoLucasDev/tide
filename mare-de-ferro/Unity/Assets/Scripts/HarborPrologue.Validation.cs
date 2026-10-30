@@ -31,6 +31,7 @@ public partial class HarborGame {
         yield return Photograph("ui-portugues");SetLanguage(true);
         Check(Chapter==Prologue.Arrival&&dialog!="","Fresh journey opens arrival for a job aboard the missing Boa Esperanca");
         yield return Photograph("prologo-chegada");ReadStory();
+        yield return Photograph("ui-exploracao");
         SetInventory(true);yield return Photograph("ui-diario");journalTab=2;yield return Photograph("ui-tripulacao");
         Screen.SetResolution(1280,720,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.5f);
         yield return Photograph("ui-tripulacao-720p");SetInventory(false);SetPaused(true);
@@ -58,6 +59,7 @@ public partial class HarborGame {
             }
             // Use actual movement and physical collision for every task, never teleport between stations.
             yield return ApproachTask();
+            if(stage==Prologue.Mara)yield return Photograph("ui-interacao");
             Check(HarborNavigation.Distance(captain.position,TaskTarget())<=2,"Walk to reachable task: "+stage+" / pot "+save.trainingPots);
             TickPrologue(.02f,false,false);
             if(HoldTask) {

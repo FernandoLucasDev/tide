@@ -178,4 +178,4 @@ PASS: Finishing prologue unlocks existing free sailing
 PASS: Legacy economy preserved while new prologue becomes available
 PASS: Ending and keepsake survive disk reload
 PASS: Full prologue exercised using movement, interactions, dialog, audio timing and persistence
-2026-10-30T12:00:03.5904903Z
+2026-10-30T12:04:09.2586137Z

@@ -6,7 +6,8 @@ A interface usa as pinturas aprovadas como referência de atmosfera: azul-petró
 
 - Menu com a pintura de Porto das Velas já aprovada.
 - HUD de localização, período narrativo do dia, moedas e covos guardados. O período acompanha as etapas do prólogo; não é um relógio de simulação contínua.
-- Objetivo em cartão de papel, marcador espacial e progresso da tarefa junto à indicação de interação.
+- HUD compacto: localização e objetivo sobre sombra suave, dia e moedas em uma faixa pequena no canto direito. O papel fica reservado aos diálogos e ao diário.
+- Marcador espacial discreto. A indicação de interação aparece perto do personagem quando ele alcança o objetivo; a faixa permanente de “siga o marcador” foi removida. Progresso de trabalho e espera continuam visíveis durante a tarefa.
 - Diálogos com seis retratos, nome e função; páginas longas têm rolagem. E ou o botão continuam a conversa.
 - Diário com abas de viagem, capturas e pessoas. A pista da porcelana só aparece depois da descoberta.
 - Pausa com salvar, retomar, sair e seleção EN/PT. Idioma padrão inglês; preferência é mantida entre sessões. A tradução cobre o prólogo e sua interface; a exploração livre legada ainda contém textos em português.

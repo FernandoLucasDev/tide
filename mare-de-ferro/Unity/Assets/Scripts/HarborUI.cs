@@ -4,7 +4,7 @@ using UnityEngine;
 namespace MareDeFerro {
 public partial class HarborGame {
     readonly Color ink=new Color(.09f,.19f,.21f),ivory=new Color(.92f,.87f,.76f),gold=new Color(.78f,.62f,.36f),seafoam=new Color(.55f,.73f,.66f);
-    Texture2D paperTexture,portraitAtlas,coverTexture,circleTexture,fadeTexture;
+    Texture2D paperTexture,portraitAtlas,coverTexture,circleTexture,fadeTexture,hudShade;
     GUIStyle serif,caption,paperBody,paperSmall,centered,frameStyle,paperStyle,portraitFrame;
     bool english=true;
     int journalTab;
@@ -21,7 +21,7 @@ public partial class HarborGame {
         title=Style(76,ivory,false,display);body=Style(21,ivory,true);paperBody=Style(21,ink,true);paperSmall=Style(16,ink,true);
         centered=Style(16,ivory);centered.alignment=TextAnchor.MiddleCenter;
         white=Solid(Color.white);accent=Solid(gold);panel=Solid(new Color(.06f,.14f,.16f,.97f));
-        paperTexture=Paper();circleTexture=Disc();fadeTexture=Fade();
+        paperTexture=Paper();circleTexture=Disc();fadeTexture=Fade();hudShade=HudShade();
         coverTexture=Resources.Load<Texture2D>("UI/HarborCover");portraitAtlas=Resources.Load<Texture2D>("UI/CrewPortraits");
         frameStyle=new GUIStyle{normal={background=Rounded(new Color(.055f,.14f,.16f,.97f),gold)},border=new RectOffset(12,12,12,12)};
         paperStyle=new GUIStyle{normal={background=Rounded(ivory,gold)},border=new RectOffset(12,12,12,12)};
@@ -44,6 +44,7 @@ public partial class HarborGame {
     }
     Texture2D Disc(){var t=new Texture2D(64,64,TextureFormat.RGBA32,false);for(int y=0;y<64;y++)for(int x=0;x<64;x++){float d=Vector2.Distance(new Vector2(x,y),new Vector2(31.5f,31.5f));t.SetPixel(x,y,new Color(1,1,1,Mathf.Clamp01(31.5f-d)));}t.Apply();return t;}
     Texture2D Fade(){var t=new Texture2D(128,1,TextureFormat.RGBA32,false);t.wrapMode=TextureWrapMode.Clamp;for(int x=0;x<128;x++)t.SetPixel(x,0,new Color(.018f,.05f,.065f,Mathf.Lerp(.94f,0,x/127f)));t.Apply();return t;}
+    Texture2D HudShade(){var t=new Texture2D(128,128,TextureFormat.RGBA32,false);t.wrapMode=TextureWrapMode.Clamp;for(int y=0;y<128;y++)for(int x=0;x<128;x++){float a=(1-Mathf.SmoothStep(0,1,x/127f))*Mathf.SmoothStep(0,1,y/90f);t.SetPixel(x,y,new Color(.012f,.035f,.04f,a*.94f));}t.Apply();return t;}
     void Fill(Rect r,Color c){Color old=GUI.color;GUI.color=c;GUI.DrawTexture(r,white);GUI.color=old;}
     void Circle(Rect r,Color c){Color old=GUI.color;GUI.color=c;GUI.DrawTexture(r,circleTexture);GUI.color=old;}
     void Rule(float x,float y,float width,Color c){Fill(new Rect(x,y,width,1),c);}
@@ -98,34 +99,29 @@ public partial class HarborGame {
         LanguageButtons(80,h-57);GUI.Label(new Rect(w-390,h-49,330,25),"PORTO DAS VELAS  ·  01",small);
     }
     void DrawHud(float w,float h) {
-        Frame(new Rect(28,26,330,80),false);CompassRose(new Rect(43,40,48,48),gold);
-        GUI.Label(new Rect(108,39,230,31),OnTrainingDeck?"São Bento":"Porto das Velas",heading);
-        GUI.Label(new Rect(109,76,230,20),OnTrainingDeck?T("GREENHORN  /  DECK CREW","NOVATO  /  TRIPULAÇÃO"):T("VELAS COVE  /  HOME PORT","ENSEADA  /  PORTO"),tiny);
-        Frame(new Rect(w/2-108,27,216,65),false);
+        GUI.DrawTexture(new Rect(0,0,490,345),hudShade);
+        CompassRose(new Rect(30,30,30,30),gold);
+        GUI.Label(new Rect(74,24,310,36),OnTrainingDeck?"São Bento":"Porto das Velas",heading);
+        GUI.Label(new Rect(76,64,300,22),OnTrainingDeck?T("GREENHORN · FIRST TRIP","NOVATO · PRIMEIRA SAÍDA"):T("VELAS COVE","ENSEADA DAS VELAS"),Style(12,ivory));
+        Rule(30,96,290,new Color(gold.r,gold.g,gold.b,.45f));
         string phase=Chapter<=Prologue.Board?T("Morning","Manhã"):OnTrainingDeck?T("Afternoon","Tarde"):Chapter<Prologue.Radio?T("Dusk","Anoitecer"):T("Night","Noite");
-        GUI.Label(new Rect(w/2-90,37,190,25),T("DAY 01","DIA 01")+"   /   "+phase,small);
-        Rule(w/2-90,68,178,gold);GUI.Label(new Rect(w/2-90,74,190,18),T("CRAB SEASON • FIRST ARRIVAL","TEMPORADA • PRIMEIRA CHEGADA"),Style(10,gold));
-        Frame(new Rect(w-230,26,202,80),false);Circle(new Rect(w-211,43,28,28),gold);GUI.Label(new Rect(w-208,47,25,22),"¢",Style(18,ink));
-        GUI.Label(new Rect(w-171,38,130,31),save.coins.ToString("N0"),heading);
-        GUI.Label(new Rect(w-209,78,174,19),PrologueActive?save.trainingPots+T(" / 3 pots stowed"," / 3 covos guardados"):save.hold.Count+" / "+HoldCapacity+T(" hold slots"," espaços no porão"),tiny);
+        Fill(new Rect(w-326,28,296,43),new Color(.025f,.07f,.085f,.82f));
+        GUI.Label(new Rect(w-310,39,208,25),T("Day 1","Dia 1")+"  ·  "+phase,small);
+        GUI.Label(new Rect(w-91,38,65,25),save.coins+" ¢",small);
         if(dialog==""&&!inventory&&!paused) {
-            Fill(new Rect(0,h-54,w,54),new Color(.025f,.07f,.09f,.83f));
-            Key(new Rect(30,h-41,57,27),"WASD");GUI.Label(new Rect(97,h-37,210,25),aboard?T("Throttle & rudder","Motor e leme"):T("Move","Caminhar"),small);
-            Key(new Rect(246,h-41,28,27),"C");GUI.Label(new Rect(285,h-37,150,25),T("Camera","Câmera"),small);
-            if(UiButton(new Rect(w/2-92,h-45,184,35),T("TAB   Captain’s log","TAB   Diário de bordo")))SetInventory(true);
-            if(UiButton(new Rect(w-168,h-45,140,35),T("ESC   Pause","ESC   Pausa")))SetPaused(true);
+            Fill(new Rect(26,h-57,340,31),new Color(.025f,.07f,.085f,.65f));
+            GUI.Label(new Rect(38,h-51,325,24),aboard?T("WASD  Helm     SPACE  Brake","WASD  Leme     ESPAÇO  Freio"):T("WASD  Move     SHIFT  Run     C  Camera","WASD  Mover     SHIFT  Correr     C  Câmera"),Style(13,ivory));
+            if(UiButton(new Rect(w-276,h-59,150,33),T("TAB   Logbook","TAB   Diário")))SetInventory(true);
+            if(UiButton(new Rect(w-116,h-59,86,33),"ESC"))SetPaused(true);
         }
     }
     void DrawQuestCard() {
-        Rect r=new Rect(28,138,292,218);Frame(r,true);
-        GUI.Label(new Rect(r.x+22,r.y+17,250,22),T("CHAPTER 00","CAPÍTULO 00"),Style(12,new Color(.48f,.35f,.2f)));
-        GUI.Label(new Rect(r.x+22,r.y+42,250,33),T("A place on the dock","Uma vaga no cais"),Style(23,ink,false,serif.font));
-        Rule(r.x+22,r.y+85,247,new Color(.69f,.61f,.46f));
-        GUI.Label(new Rect(r.x+22,r.y+102,247,76),UiObjective(),Style(18,ink,true));
-        for(int i=0;i<3;i++)Circle(new Rect(r.x+22+i*18,r.y+188,8,8),i<save.trainingPots?ink:new Color(.68f,.64f,.54f));
-        GUI.Label(new Rect(r.x+91,r.y+184,175,23),OnTrainingDeck?T("Your first three pots","Seus primeiros três covos"):T("A new beginning","Um novo começo"),Style(12,ink));
+        GUI.Label(new Rect(30,113,320,28),T("A place on the dock","Uma vaga no cais"),Style(20,ivory,false,serif.font));
+        GUI.Label(new Rect(30,153,290,65),UiObjective(),Style(17,ivory,true));
+        if(OnTrainingDeck){for(int i=0;i<3;i++)Circle(new Rect(31+i*17,227,6,6),i<save.trainingPots?gold:new Color(.5f,.56f,.54f));GUI.Label(new Rect(96,219,225,23),save.trainingPots+T(" / 3 pots stowed"," / 3 covos guardados"),Style(12,ivory));}
     }
     void DrawTaskMarker(float w,float h) {
+        if(HarborNavigation.Distance(captain.position,TaskTarget())<=2)return;
         Vector3 screen=view.WorldToScreenPoint(TaskTarget()+Vector3.up*2.2f);if(screen.z<=0)return;
         float scale=Mathf.Min(Screen.width/1440f,Screen.height/900f);float x=Mathf.Clamp(screen.x/scale,355,w-245),y=Mathf.Clamp((Screen.height-screen.y)/scale,123,h-185);
         float pulse=1+Mathf.Sin(Time.unscaledTime*2)*.06f;Circle(new Rect(x-13*pulse,y-13*pulse,26*pulse,26*pulse),new Color(.96f,.74f,.38f,.24f));
@@ -134,10 +130,17 @@ public partial class HarborGame {
     void DrawInteraction(float w,float h) {
         if(fishing)return;
         bool close=PrologueActive&&HarborNavigation.Distance(captain.position,TaskTarget())<=2;
+        if(PrologueActive&&!close&&Chapter!=Prologue.Soak&&Chapter!=Prologue.Ending)return;
         string text=PrologueActive?UiInteraction(close):Localize(Prompt());
-        Rect r=new Rect(w/2-245,h-145,490,65);Frame(r,false);
+        if(string.IsNullOrEmpty(text))return;
+        Vector3 screen=view.WorldToScreenPoint(captain.position+Vector3.up*2.5f);
+        float scale=Mathf.Min(Screen.width/1440f,Screen.height/900f);
+        float px=Mathf.Clamp(screen.x/scale,515,w-195),py=Mathf.Clamp((Screen.height-screen.y)/scale-70,280,h-155);
+        float width=Mathf.Clamp(small.CalcSize(new GUIContent(text)).x+78,145,340);
+        Rect r=PrologueActive&&close?new Rect(px-width/2,py,width,54):new Rect(w/2-width/2,h-130,width,54);
+        Fill(r,new Color(.025f,.07f,.085f,.92f));Rule(r.x,r.yMax-1,r.width,new Color(gold.r,gold.g,gold.b,.6f));
         string key=PrologueActive?(Chapter==Prologue.Soak||Chapter==Prologue.Ending?"…":close?"E":"↑"):"E";
-        Key(new Rect(r.x+17,r.y+15,35,35),key);GUI.Label(new Rect(r.x+67,r.y+13,405,42),text,new GUIStyle(small){wordWrap=true,alignment=TextAnchor.MiddleLeft});
+        Key(new Rect(r.x+12,r.y+12,29,29),key);GUI.Label(new Rect(r.x+55,r.y+6,r.width-65,42),text,new GUIStyle(small){wordWrap=true,alignment=TextAnchor.MiddleLeft});
         if(PrologueActive&&HoldTask&&taskProgress>0)Fill(new Rect(r.x+9,r.yMax-5,(r.width-18)*taskProgress,3),gold);
         if(PrologueActive&&Chapter==Prologue.Soak)Fill(new Rect(r.x+9,r.yMax-5,(r.width-18)*(1-soakTime/8),3),seafoam);
     }
