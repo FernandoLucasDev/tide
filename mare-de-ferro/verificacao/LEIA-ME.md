@@ -2,6 +2,10 @@
 
 O relatório **build-report.txt** registra o resultado da compilação Windows no Unity 6000.0.85f1.
 
+## Acabamento 3D do prólogo
+
+`art-trabalho.png` mostra a postura de trabalho do novo personagem; `ui-interacao.png` mostra o cais e `prologo-conves.png` mostra o São Bento. O percurso automatizado verifica também a presença das texturas no executável, a malha de roupa e a resposta da animação durante uma tarefa. A inspeção visual inclui a orientação dos rótulos, o lado externo do casco e a legibilidade noturna. Esta é a primeira passagem de acabamento descrita em `ACABAMENTO-PROLOGO.md`, ainda aquém do detalhamento das pinturas de referência.
+
 ## Interface do prólogo
 
 As capturas `ui-menu`, `ui-mara`, `ui-diario`, `ui-tripulacao`, `ui-portugues`, `ui-tripulacao-720p` e `ui-pausa-720p` mostram a aplicação da direção visual ao executável. Foram inspecionados retratos, leitura, recortes e disposição em 1440×900 e 1280×720. O teste do prólogo verifica também os assets, o idioma padrão, a troca EN/PT e a tradução de cada página de história. A troca de resolução revelou um erro no pivô da bússola; a transformação foi corrigida para preservar a escala da interface.

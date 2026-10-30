@@ -17,7 +17,7 @@ public partial class HarborGame:MonoBehaviour {
     public Transform captain, vessel;
     public CharacterController walker;
     Vector3 lastSafe, cameraVelocity;
-    float verticalVelocity, toastUntil, fishClock, danger, zoom=1, walkPhase;
+    float verticalVelocity, toastUntil, fishClock, danger, zoom=.88f, walkPhase;
     Vector2 inventoryScroll;
     readonly float[] readyAt=new float[3];
     bool paused, inventory, overview;
@@ -60,7 +60,7 @@ public partial class HarborGame:MonoBehaviour {
     void LateUpdate() {
         if(!view||!started)return;
         Vector3 focus=aboard?vessel.position:captain.position;
-        Vector3 offset=overview?(aboard?new Vector3(15,22,-24)*zoom:new Vector3(29,27,-36)):new Vector3(10,12.5f,-14)*zoom;
+        Vector3 offset=overview?(aboard?new Vector3(15,22,-24)*zoom:new Vector3(29,27,-36)):new Vector3(9,10.5f,-13)*zoom;
         Vector3 target=overview&&!aboard&&!PrologueActive?new Vector3(-1,2.5f,7):focus+Vector3.up*.7f;
         if(aboard)target+=Vector3.ProjectOnPlane(vessel.forward,Vector3.up)*speed*.55f;
         view.transform.position=Vector3.SmoothDamp(view.transform.position,target+offset,ref cameraVelocity,.55f,Mathf.Infinity,Time.unscaledDeltaTime);

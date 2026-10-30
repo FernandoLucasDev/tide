@@ -24,6 +24,8 @@ public partial class HarborGame {
         yield return null;
         yield return Photograph("ui-menu");
         Check(english&&portraitAtlas&&coverTexture,"English default, crew atlas and approved harbor cover loaded");
+        Check(captain.GetComponent<HarborActor>()&&captain.Find("Respiração/Casaco costurado"),"Detailed player rig and continuous clothing mesh loaded");
+        Check(Resources.Load<Texture2D>("Art/WeatheredWood")&&Resources.Load<Texture2D>("Art/CoastalPlaster"),"Painted wood and plaster textures included in standalone build");
         StartJourney();
         string firstPage=dialog;
         Check(Localize(firstPage)!=firstPage,"Arrival is localized into English");
@@ -64,6 +66,7 @@ public partial class HarborGame {
             TickPrologue(.02f,false,false);
             if(HoldTask) {
                 TickPrologue(.3f,true,true);float partial=taskProgress;
+                if(stage==Prologue.Bait&&save.trainingPots==0){yield return Photograph("art-trabalho");Check(Quaternion.Angle(Quaternion.identity,captain.Find("Respiração/Manga esquerda").localRotation)>20,"Work animation responds to active deck task");}
                 SetPaused(true);TickPrologue(10,true,false);Check(taskProgress==partial,"Pause freezes manual work: "+stage);SetPaused(false);
                 TickPrologue(.1f,false,false);Check(taskProgress==0,"Releasing E resets unfinished work: "+stage);
                 for(int i=0;i<200&&Chapter==stage&&dialog=="";i++)TickPrologue(.02f,true,i==0);

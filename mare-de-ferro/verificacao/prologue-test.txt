@@ -1,4 +1,6 @@
 PASS: English default, crew atlas and approved harbor cover loaded
+PASS: Detailed player rig and continuous clothing mesh loaded
+PASS: Painted wood and plaster textures included in standalone build
 PASS: Arrival is localized into English
 PASS: Portuguese preserves original story text
 PASS: Fresh journey opens arrival for a job aboard the missing Boa Esperanca
@@ -38,6 +40,7 @@ PASS: Conversation completes without trapping input
 PASS: Task advances exactly once: Board
 PASS: Checkpoint roundtrip: Bait
 PASS: Walk to reachable task: Bait / pot 0
+PASS: Work animation responds to active deck task
 PASS: Pause freezes manual work: Bait
 PASS: Releasing E resets unfinished work: Bait
 PASS: Conversation completes without trapping input
@@ -178,4 +181,4 @@ PASS: Finishing prologue unlocks existing free sailing
 PASS: Legacy economy preserved while new prologue becomes available
 PASS: Ending and keepsake survive disk reload
 PASS: Full prologue exercised using movement, interactions, dialog, audio timing and persistence
-2026-10-30T12:04:09.2586137Z
+2026-10-30T12:50:03.6388718Z

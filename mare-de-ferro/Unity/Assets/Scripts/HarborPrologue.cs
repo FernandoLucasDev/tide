@@ -7,6 +7,8 @@ public partial class HarborGame {
     // Checkpoints are explicit: closing a conversation commits its outcome once.
     public enum Prologue { Arrival, Notice, Mara, Dalia, Celina, Board, Bait, LoadPot, Soak, Winch, Sort, Stow, Secure, Return, Deliver, Dinner, Radio, Ending, Complete }
     public bool PrologueActive => save.prologueStage < (int)Prologue.Complete;
+    public bool CarryingOnDeck => carriedItem&&carriedItem.gameObject.activeInHierarchy;
+    public bool WorkingOnDeck => PrologueActive&&HoldTask&&taskProgress>0;
     Prologue Chapter => (Prologue)save.prologueStage;
     bool OnTrainingDeck => Chapter>=Prologue.Bait && Chapter<=Prologue.Return;
     Vector3 PrologueSafeSpawn => OnTrainingDeck?DeckOrigin+new Vector3(0,1.65f,-5):HarborWorld.DockSpawn;
@@ -126,6 +128,7 @@ public partial class HarborGame {
         if(requireRelease)return;
         if(HarborNavigation.Distance(captain.position,TaskTarget())>2){taskProgress=0;return;}
         if(HoldTask) {
+            if(held){Vector3 facing=Vector3.ProjectOnPlane(TaskTarget()-captain.position,Vector3.up);if(facing.sqrMagnitude>.01f)captain.rotation=Quaternion.Slerp(captain.rotation,Quaternion.LookRotation(facing),dt*7);}
             taskProgress=held?Mathf.Clamp01(taskProgress+dt/(Chapter==Prologue.Winch?3:1.6f)):0;
             if(Chapter==Prologue.Winch)questPot.localPosition=new Vector3(3.7f,Mathf.Lerp(-1,1.7f,taskProgress),-3);
             if(taskProgress>=1){storyAudio.PlayOneShot(workClip,.35f);DoPrologueAction();}

@@ -27,6 +27,7 @@ public partial class HarborGame {
         HarborWorld.Box("Janela",new Vector3(0,3.4f,5.27f),new Vector3(3.7f,.8f,.08f),HarborWorld.teal,deckRoot,false);
         HarborWorld.Beam("Mastro",new Vector3(0,4.7f,6.5f),new Vector3(0,7.5f,6.5f),.12f,HarborWorld.iron,deckRoot);
         HarborWorld.Rope("Antena",new Vector3(0,7.5f,6.5f),new Vector3(-4,2,-7),.25f,deckRoot,HarborWorld.iron);
+        HarborWorld.DressTrainingVessel(deckRoot);
         TrainingTable("BANCADA DE ISCA",new Vector3(-2.5f,1.6f,-4));
         TrainingTable("TRIAGEM",new Vector3(-2.5f,1.6f,0));
         HarborWorld.Box("Porão e viveiro",new Vector3(-2.5f,1.95f,3),new Vector3(1.5f,.8f,1.2f),HarborWorld.teal,deckRoot);
@@ -81,7 +82,8 @@ public partial class HarborGame {
     }
     void MarkerLabel(string text,Vector3 p,Transform parent) {
         var go=new GameObject(text);go.transform.SetParent(parent,false);go.transform.localPosition=p;
-        var mesh=go.AddComponent<TextMesh>();mesh.text=text;mesh.characterSize=.07f;mesh.fontSize=42;mesh.anchor=TextAnchor.MiddleCenter;mesh.color=new Color(1,.82f,.5f);
+        var mesh=go.AddComponent<TextMesh>();mesh.text=text;mesh.characterSize=.045f;mesh.fontSize=42;mesh.anchor=TextAnchor.MiddleCenter;mesh.color=new Color(1,.82f,.5f);
+        go.AddComponent<HarborWorldCaption>();
     }
     AudioClip MakeStorySound(string name,bool knock) {
         const int rate=22050;float[] samples=new float[rate/2];var random=new System.Random(91);
@@ -104,8 +106,8 @@ public partial class HarborGame {
         carriedItem.gameObject.SetActive(Chapter==Prologue.LoadPot||Chapter==Prologue.Stow);
         if(RenderSettings.sun) {
             bool night=Chapter>=Prologue.Dinner&&PrologueActive;
-            RenderSettings.sun.intensity=night?.38f:Chapter<=Prologue.Mara?1.1f:1.6f;
-            RenderSettings.sun.color=night?new Color(.52f,.65f,1):new Color(1,.76f,.49f);
+            RenderSettings.sun.intensity=night?.38f:Chapter<=Prologue.Mara?1.15f:1.25f;
+            RenderSettings.sun.color=night?new Color(.52f,.65f,1):new Color(1,.86f,.68f);
             RenderSettings.fogColor=night?new Color(.19f,.27f,.35f):new Color(.57f,.60f,.57f);
         }
     }

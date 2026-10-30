@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace MareDeFerro {
-public static class HarborWorld {
+public static partial class HarborWorld {
     static Transform root;
     static readonly Dictionary<string, Material> materials = new Dictionary<string, Material>();
     public static Material wood, darkWood, plaster, roof, stone, teal, iron, brass, glass, cream, leaves, yellow, skin;
@@ -14,12 +14,12 @@ public static class HarborWorld {
     public static Transform Create() {
         Random.InitState(7419); materials.Clear();
         root=new GameObject("Porto das Velas — cenário").transform;
-        wood=Mat("Madeira salgada",new Color(.31f,.24f,.16f),.15f,0,1);
+        wood=Mat("Madeira salgada",new Color(.36f,.30f,.23f),.15f,0,1);
         darkWood=Mat("Vigas",new Color(.17f,.13f,.09f),.1f,0,1);
         plaster=Mat("Cal marfim",new Color(.78f,.70f,.54f),.08f,0,2);
-        roof=Mat("Telha terracota",new Color(.45f,.16f,.09f),.18f,0,2);
+        roof=Mat("Telha terracota",new Color(.42f,.24f,.17f),.18f,0,2);
         stone=Mat("Pedra costeira",new Color(.36f,.36f,.30f),.12f,0,2);
-        teal=Mat("Pintura petróleo",new Color(.08f,.32f,.32f),.28f,.08f,2);
+        teal=Mat("Pintura petróleo",new Color(.18f,.32f,.31f),.28f,.08f,2);
         iron=Mat("Ferro",new Color(.13f,.17f,.17f),.45f,.6f,2);
         brass=Mat("Latão",new Color(.64f,.40f,.15f),.55f,.5f);
         cream=Mat("Casco marfim",new Color(.74f,.70f,.54f),.28f,.1f,2);
@@ -27,8 +27,9 @@ public static class HarborWorld {
         yellow=Mat("Impermeável mostarda",new Color(.86f,.48f,.07f),.27f);
         skin=Mat("Pele",new Color(.56f,.34f,.21f),.15f);
         glass=Mat("Luz âmbar",new Color(.95f,.56f,.16f),.65f,.15f);
-        glass.EnableKeyword("_EMISSION"); glass.SetColor("_EmissionColor",new Color(1,.45f,.1f)*1.5f);
-        Lighting(); Sea(); Landscape(); Harbor();
+        glass.color=new Color(.75f,.54f,.29f);
+        glass.EnableKeyword("_EMISSION"); glass.SetColor("_EmissionColor",new Color(1,.63f,.3f)*.45f);
+        Lighting(); Sea(); Landscape(); Harbor();DressHarbor();
         if(Application.isPlaying) {
             var pieces=new List<GameObject>();
             foreach(var renderer in root.GetComponentsInChildren<MeshRenderer>()) {
@@ -59,14 +60,18 @@ public static class HarborWorld {
         var baseMaterial=Resources.Load<Material>("HarborSurface");
         var m=baseMaterial?new Material(baseMaterial):new Material(Shader.Find("Standard")); m.name=name; m.color=color;
         m.SetFloat("_Glossiness",smooth); m.SetFloat("_Metallic",metal);
+        string painted=texture==1?"Art/WeatheredWood":name.StartsWith("Cal ")||name=="Casco marfim"?"Art/CoastalPlaster":null;
+        var paintedTexture=painted==null?null:Resources.Load<Texture2D>(painted);
+        if(paintedTexture){m.mainTexture=paintedTexture;m.mainTextureScale=texture==1?new Vector2(1,1):new Vector2(1.5f,1.5f);materials[name]=m;return m;}
         if(texture>0) {
             int size=128; var t=new Texture2D(size,size,TextureFormat.RGB24,true); t.name=name+" — textura";
+            var textureRandom=new System.Random(7419+name.Length*31);
             Color[] pixels=new Color[size*size];
             for(int y=0;y<size;y++) for(int x=0;x<size;x++) {
-                float n=Mathf.PerlinNoise(x*(texture==1?.12f:.13f),y*(texture==1?.018f:.13f));
-                float grain=Random.value*.018f;
-                float f=.86f+n*.23f+grain;
-                if(texture==1) f-=Mathf.Pow(Mathf.Abs(Mathf.Sin(x*.25f+Mathf.Sin(y*.03f)*1.5f)),22)*.19f;
+                float n=Mathf.PerlinNoise(x*(texture==1?.3f:.06f),y*(texture==1?.014f:.06f));
+                float grain=(float)textureRandom.NextDouble()*.018f;
+                float f=.79f+n*.27f+grain;
+                if(texture==1) f-=Mathf.Pow(Mathf.Abs(Mathf.Sin(x*1.7f+Mathf.Sin(y*.025f)*.4f)),14)*.06f;
                 pixels[y*size+x]=new Color(f,f,f);
             }
             t.SetPixels(pixels); t.Apply(); t.wrapMode=TextureWrapMode.Repeat; t.anisoLevel=4;
@@ -105,7 +110,7 @@ public static class HarborWorld {
         RenderSettings.fogMode=FogMode.ExponentialSquared; RenderSettings.fogDensity=.0065f;
         var sky=Resources.Load<Shader>("HarborSky"); RenderSettings.skybox=new Material(sky);
         var sun=new GameObject("Sol de fim de tarde").AddComponent<Light>(); sun.transform.SetParent(root);
-        sun.type=LightType.Directional; sun.color=new Color(1,.76f,.49f); sun.intensity=1.6f;
+        sun.type=LightType.Directional; sun.color=new Color(1,.86f,.68f); sun.intensity=1.25f;
         sun.transform.rotation=Quaternion.Euler(24,-125,0); sun.shadows=LightShadows.Soft; sun.shadowStrength=.75f; sun.shadowBias=.03f;
         RenderSettings.sun=sun; RenderSettings.skybox.SetVector("_SunDir",-sun.transform.forward);
         QualitySettings.shadows=ShadowQuality.All; QualitySettings.shadowResolution=ShadowResolution.High;
@@ -113,8 +118,8 @@ public static class HarborWorld {
     }
     static void Sea() {
         var mesh=new Mesh(); mesh.name="Superfície subdividida"; mesh.indexFormat=UnityEngine.Rendering.IndexFormat.UInt32;
-        const int n=160; var v=new Vector3[(n+1)*(n+1)]; var uv=new Vector2[v.Length]; var tri=new int[n*n*6]; int k=0;
-        for(int z=0;z<=n;z++) for(int x=0;x<=n;x++) { int i=z*(n+1)+x; v[i]=new Vector3((x-n/2)*6,0,(z-n/2)*6); uv[i]=new Vector2(x/(float)n,z/(float)n); }
+        const int n=320; var v=new Vector3[(n+1)*(n+1)]; var uv=new Vector2[v.Length]; var tri=new int[n*n*6]; int k=0;
+        for(int z=0;z<=n;z++) for(int x=0;x<=n;x++) { int i=z*(n+1)+x; v[i]=new Vector3((x-n/2)*1.5f,0,(z-n/2)*1.5f); uv[i]=new Vector2(x/(float)n,z/(float)n); }
         for(int z=0;z<n;z++) for(int x=0;x<n;x++){int i=z*(n+1)+x; tri[k++]=i;tri[k++]=i+n+1;tri[k++]=i+1;tri[k++]=i+1;tri[k++]=i+n+1;tri[k++]=i+n+2;}
         mesh.vertices=v;mesh.uv=uv;mesh.triangles=tri;mesh.RecalculateNormals();mesh.RecalculateBounds();
         var g=new GameObject("Mar — ondas e reflexos");g.transform.SetParent(root);g.transform.localPosition=new Vector3(0,-.04f,0);
@@ -160,10 +165,8 @@ public static class HarborWorld {
         }
         for(int ring=0;ring<3;ring++)for(int j=0;j<sides;j++){int a=ring*sides+j,b=ring*sides+(j+1)%sides,c=a+sides,d=b+sides;tris.AddRange(new[]{a,c,b,b,c,d});}
         for(int j=1;j<sides-1;j++)tris.AddRange(new[]{27,27+j,27+j+1});
-        // Separate vertices produce broad weathered facets, rather than rounded boulders.
-        var flat=new Vector3[tris.Count];for(int i=0;i<tris.Count;i++)flat[i]=verts[tris[i]];
-        var indices=new int[flat.Length];for(int i=0;i<indices.Length;i++)indices[i]=i;
-        var mesh=new Mesh();mesh.vertices=flat;mesh.triangles=indices;mesh.RecalculateNormals();mesh.RecalculateBounds();
+        var rockUV=new List<Vector2>();foreach(var v in verts)rockUV.Add(new Vector2(v.x*.15f,v.y*.15f));
+        var mesh=new Mesh();mesh.SetVertices(verts);mesh.SetUVs(0,rockUV);mesh.SetTriangles(tris,0);mesh.RecalculateNormals();mesh.RecalculateBounds();
         var g=new GameObject(name);g.transform.SetParent(root);g.transform.position=p;g.transform.rotation=Quaternion.Euler(0,Random.Range(0,360),0);
         g.AddComponent<MeshFilter>().sharedMesh=mesh;g.AddComponent<MeshRenderer>().sharedMaterial=mat;
     }
@@ -228,7 +231,8 @@ public static class HarborWorld {
         Rope("Varal de luzes",new Vector3(-15,6.1f,11),new Vector3(11,6.5f,11),2.0f);
         for(int i=0;i<12;i++) {float t=i/11f; Ball("Lâmpada de festa",new Vector3(Mathf.Lerp(-15,11,t),Mathf.Lerp(6.1f,6.5f,t)-Mathf.Sin(t*Mathf.PI)*2,11),Vector3.one*.13f,glass);}
         for(int i=0;i<14;i++) {
-            float x=Random.Range(-21,20),z=Random.Range(5.9f,8.6f);
+            // Keep the continuous waterfront walking lane clear, independently of art randomization.
+            float x=Random.Range(-21,20),z=Random.Range(7.8f,8.6f);
             if(Mathf.Abs(x-1)<4||Mathf.Abs(x+4.5f)<2) continue;
             Crate(new Vector3(x,1.55f,z),Random.Range(.65f,1.0f));
             if(i%2==0) Barrel(new Vector3(x+.9f,1.55f,z));
@@ -290,8 +294,9 @@ public static class HarborWorld {
             int cols=Mathf.CeilToInt(w/.48f),rows=Mathf.CeilToInt(len/.46f);
             for(int r=0;r<rows;r++) for(int c=0;c<cols;c++) {
                 float t=(r+.45f)/rows;
-                var tile=Box("Telha",p+new Vector3(-w/2+(c+.5f)*w/cols,rise*(1-t)+.1f,side*d*.5f*t),new Vector3(w/cols-.025f,.065f,len/rows+.07f),c%5==0?Mat("Telha clara",new Color(.58f,.25f,.13f),.2f,0,2):roof,parent,false);
-                tile.transform.localRotation=Quaternion.Euler(side*angle,0,0);
+                var tile=Box("Telha",p+new Vector3(-w/2+(c+.5f)*w/cols,rise*(1-t)+.1f,side*d*.5f*t),new Vector3(w/cols-.025f,.065f,len/rows+.07f),c%5==0?Mat("Telha clara",new Color(.55f,.34f,.23f),.2f,0,2):roof,parent,false);
+                tile.transform.localPosition+=Vector3.up*Mathf.Sin(c*7+r*11)*.018f;
+                tile.transform.localRotation=Quaternion.Euler(side*angle,Mathf.Sin(c*3+r)*1.2f,0);
             }
         }
         Beam("Cumeeira",p+new Vector3(-w*.5f,rise+.10f,0),p+new Vector3(w*.5f,rise+.10f,0),.2f,roof,parent);
@@ -373,24 +378,7 @@ public static class HarborWorld {
         return b;
     }
     public static Transform Person(string name,Vector3 p,Material coat,bool old) {
-        var g=new GameObject(name).transform;g.SetParent(root);g.position=p;
-        Box("Bota esquerda",new Vector3(-.16f,.12f,.05f),new Vector3(.23f,.24f,.42f),iron,g,false);
-        Box("Bota direita",new Vector3(.16f,.12f,.05f),new Vector3(.23f,.24f,.42f),iron,g,false);
-        Box("Perna esquerda",new Vector3(-.16f,.43f,0),new Vector3(.22f,.47f,.25f),old?iron:coat,g,false);
-        Box("Perna direita",new Vector3(.16f,.43f,0),new Vector3(.22f,.47f,.25f),coat,g,false);
-        Shape(PrimitiveType.Capsule,"Casaco",new Vector3(0,.95f,0),new Vector3(.65f,.43f,.39f),coat,g,false);
-        Ball("Cabeça",new Vector3(0,1.53f,0),new Vector3(.39f,.43f,.39f),skin,g);
-        Box("Nariz",new Vector3(0,1.52f,.20f),new Vector3(.09f,.09f,.09f),skin,g,false);
-        Cylinder("Gorro",new Vector3(0,1.75f,0),.215f,.18f,old?cream:teal,g);
-        for(int s=-1;s<=1;s+=2) {
-            var arm=Shape(PrimitiveType.Capsule,s<0?"Braço esquerdo":"Braço direito",new Vector3(s*.36f,1,0),new Vector3(.20f,.30f,.20f),coat,g,false);
-            arm.transform.localRotation=Quaternion.Euler(0,0,s*8);
-            Ball("Mão",new Vector3(s*.39f,.71f,0),Vector3.one*.17f,skin,g);
-        }
-        if(name=="Você") {
-            for(int s=-1;s<=1;s+=2)Box("Alça do impermeável",new Vector3(s*.17f,1.18f,.195f),new Vector3(.07f,.43f,.035f),darkWood,g,false);
-        }
-        return g;
+        return DetailedPerson(name,p,coat,old);
     }
     static void Buoy(Vector3 p,int index) {
         var g=new GameObject("Boia "+(index+1)).transform;g.SetParent(root);g.position=p;

@@ -22,6 +22,7 @@ No editor, use **Maré de Ferro → Criar cena e gerar Windows**. O executável 
 - Três ciclos de trabalho no convés com caminhada entre bancada, covo, guincho, triagem e porão; amarração de carga e ermitão protegido no viveiro.
 - Objetivos, diário, diálogos em sequência e salvamento por etapa; diária de 36 moedas e exploração livre liberada ao concluir.
 - Primeira aplicação da direção final à UI: menu ilustrado, seis retratos, painéis náuticos, diário com abas e prólogo em inglês/português.
+- Primeira passagem de acabamento 3D: roupas com malhas contínuas, animação de caminhada e trabalho, materiais de madeira e reboco, detalhes do cais e do São Bento, água e iluminação revistas.
 - Caminhada pelo cais, câmera e diálogos iniciais.
 - Embarque, navegação na enseada e desembarque.
 - Três covos, minigame de tensão e quatro tipos de captura no inventário.
@@ -39,6 +40,7 @@ O visual é uma primeira construção procedural, ainda distante do nível de de
 - [Controles e primeira viagem](mare-de-ferro/COMO-JOGAR.md)
 - [Prólogo implementado e critérios de validação](mare-de-ferro/PROLOGO-JOGAVEL.md)
 - [Interface, idiomas e origem dos retratos](mare-de-ferro/UI-DIRECAO.md)
+- [Acabamento do cenário e personagens do prólogo](mare-de-ferro/ACABAMENTO-PROLOGO.md)
 - [Validação da base e ajustes da versão 0.2](mare-de-ferro/BASE-JOGAVEL.md)
 - [Artes conceituais](mare-de-ferro/LEIA-ME.md)
 - [Prompts das imagens geradas por IA](mare-de-ferro/PROMPTS-ARTE.md)

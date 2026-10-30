@@ -13,10 +13,11 @@ Shader "Hidden/MareDeFerro/Grade" {
    float3 s=tex2D(_MainTex,i.uv+float2(x,y)*_MainTex_TexelSize.xy*3).rgb;
    glow+=max(s-.75,0)/25;
   }
-  c+=glow*.20;
+  c+=glow*.12;
   float lum=dot(c,float3(.2126,.7152,.0722));
-  c=lerp(lum.xxx,c,1.08); c=(c-.5)*1.045+.5;
-  float vignette=1-dot(i.uv-.5,i.uv-.5)*.32;
+  c=lerp(lum.xxx,c,.91);
+  c=(c*(2.51*c+.03))/(c*(2.43*c+.59)+.14);
+  float vignette=1-dot(i.uv-.5,i.uv-.5)*.18;
   return float4(saturate(c*vignette),1);
  }
  ENDCG }

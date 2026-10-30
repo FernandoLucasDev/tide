@@ -22,15 +22,15 @@ Shader "MareDeFerro/Water" {
   }
   void surf(Input IN, inout SurfaceOutputStandard o) {
    float2 p=IN.worldPos.xz; float t=_Time.y;
-   float n=noise(p*.7+float2(t*.06,t*.03));
-   float ripple=sin(p.x*.7+p.y*2.7+t*1.2+n*5);
+   float n=noise(p*.23+float2(t*.025,t*.015));
+   float ripple=sin(p.x*1.7+p.y*4.7+t*1.2+n*2);
    float swell=sin(p.x*.42+p.y*.27+t*.8)*.5+.5;
-   float foam=pow(saturate(ripple*.5+.5),35)*.12*smoothstep(.6,.85,n);
+   float foam=pow(saturate(ripple*.5+.5),45)*.025*smoothstep(.72,.9,noise(p*1.3));
    float fresnel=pow(1-saturate(dot(normalize(IN.viewDir),float3(0,0,1))),3);
-   o.Albedo=lerp(_Color.rgb,_Shallow.rgb,swell*.24+n*.15)+foam;
-   o.Normal=normalize(float3((noise(p*.8+float2(t*.07,0))-.5)*.25,(noise(p*.9+float2(13,t*.05))-.5)*.25,1));
-   o.Metallic=.12; o.Smoothness=.79;
-   o.Emission=_Shallow.rgb*(.025+fresnel*.035);
+   o.Albedo=lerp(_Color.rgb,_Shallow.rgb,swell*.18+n*.23)+foam;
+   o.Normal=normalize(float3(sin(p.x*2.3+p.y*.8+t*.8)*.045+sin(p.y*5.1+t)*.018,cos(p.y*2.1-p.x*.6+t*.7)*.055,1));
+   o.Metallic=.08; o.Smoothness=.88;
+   o.Emission=lerp(float3(.08,.18,.20),float3(.28,.36,.38),fresnel)*.2;
   }
   ENDCG
  }
